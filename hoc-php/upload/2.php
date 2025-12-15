@@ -29,8 +29,10 @@ if (isset($_POST['uploadClick'])) {
                 if ($_FILES['avatar']['size'] > $maxSize) {
                     echo 'File quá to';
                 } else {
+
                     $fileName = $_FILES['avatar']['name'];
-                    $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+                    $parts = explode('.', $fileName);
+                    $fileExt = strtolower(end($parts));
 
                     $allowExt = ['jpg', 'jpeg', 'png'];
 
@@ -38,12 +40,8 @@ if (isset($_POST['uploadClick'])) {
                         echo 'Chỉ cho phép upload ảnh';
                     } else {
 
-                        $newName = time() . '_' . basename($fileName);
-                        $targetPath = $uploadDir . $newName;
-
-                        if (move_uploaded_file($_FILES['avatar']['tmp_name'], $targetPath)) {
+                        if (move_uploaded_file($_FILES['avatar']['tmp_name'], './loc2/' . $_FILES['avatar']['name'])) {
                             echo 'Upload thành công<br>';
-                            echo 'Tên file: ' . $newName;
                         } else {
                             echo ' Upload thất bại';
                         }
