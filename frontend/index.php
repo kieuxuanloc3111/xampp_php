@@ -2,25 +2,23 @@
 session_start();
 
 if (isset($_POST['addCart'])) {
-
-    // Lấy dữ liệu sản phẩm từ form
+    // lay du lieu
     $title = $_POST['title'];
     $price = $_POST['price'];
     $img = $_POST['img'];
 
-    // Tạo mảng sản phẩm
+    // array
     $product = [
         'title' => $title,
         'price' => $price,
         'img' => $img
     ];
 
-    // Đưa sản phẩm vào SESSION cart
     $_SESSION['cart'][] = $product;
 
     // echo "<pre>";
     // print_r($_SESSION['cart']);
-    // echo "</pre>";
+
 }
 ?>
 

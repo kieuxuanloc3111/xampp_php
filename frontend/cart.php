@@ -16,7 +16,6 @@ if (!empty($_SESSION['cart'])) {
             ];
         } 
         else {
-            // Nếu đã tồn tại → tăng số lượng
             $cartGroup[$img]['qty']++;
             $cartGroup[$img]['total'] = $cartGroup[$img]['qty'] * $cartGroup[$img]['price'];
         }

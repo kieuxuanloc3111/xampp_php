@@ -11,19 +11,16 @@ if (isset($_POST['register'])) {
 
     $valid = true;
 
-    // Kiểm tra email rỗng
     if ($email === "") {
         $errEmail = "Vui lòng nhập email";
         $valid = false;
     }
 
-    // Kiểm tra pass rỗng
     if ($pass === "") {
         $errPass = "Vui lòng nhập mật khẩu";
         $valid = false;
     }
 
-    // Nếu không lỗi → lưu vào session
     if ($valid) {
         $_SESSION['reg_email'] = $email;
         $_SESSION['reg_pass']  = $pass;

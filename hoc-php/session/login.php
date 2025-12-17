@@ -22,15 +22,12 @@ if (isset($_POST['login'])) {
         $valid = false;
     }
 
-    // Nếu không lỗi → kiểm tra SESSION
     if ($valid) {
 
-        // Kiểm tra SESSION có tồn tại không
         if (!isset($_SESSION['reg_email']) || !isset($_SESSION['reg_pass'])) {
             $result = "<p style='color:red;'>Chưa có tài khoản. Hãy đăng ký trước!</p>";
         } else {
 
-            // So sánh email và pass
             if ($email === $_SESSION['reg_email'] && $pass === $_SESSION['reg_pass']) {
                 $result = "<p style='color:green;'>Login thành công!</p>";
             } else {
