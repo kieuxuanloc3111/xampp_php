@@ -1,34 +1,15 @@
-<?php session_start(); 
+<?php
+session_start();
 
-$cartGroup = [];
-
-if (!empty($_SESSION['cart'])) {
-    foreach ($_SESSION['cart'] as $prod) {
-        $img = $prod['img'];
-
-        if (!isset($cartGroup[$img])) {
-            $cartGroup[$img] = [
-                'title' => $prod['title'],
-                'price' => $prod['price'],
-                'img'   => $prod['img'],
-                'qty'   => 1,
-                'total' => $prod['price'],
-            ];
-        } 
-        else {
-            $cartGroup[$img]['qty']++;
-            $cartGroup[$img]['total'] = $cartGroup[$img]['qty'] * $cartGroup[$img]['price'];
-        }
-    }
-}
 $cartTotal = 0;
 
-if (!empty($cartGroup)) {
-    foreach ($cartGroup as $item) {
-        $cartTotal += $item['total'];
+if (!empty($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $id => $item) {
+        $cartTotal += $item['price'] * $item['qty'];
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -198,10 +179,9 @@ if (!empty($cartGroup)) {
 					</thead>
 
 					<tbody>
-						<?php 
-						if (!empty($cartGroup)) {
-							foreach ($cartGroup as $item) {
-						?>
+					<?php if (!empty($_SESSION['cart'])): ?>
+						<?php foreach ($_SESSION['cart'] as $id => $item): ?>
+							<?php $itemTotal = $item['price'] * $item['qty']; ?>
 							<tr>
 								<td class="cart_product">
 									<a href=""><img src="<?php echo $item['img']; ?>" alt=""></a>
@@ -209,7 +189,7 @@ if (!empty($cartGroup)) {
 
 								<td class="cart_description">
 									<h4><a href=""><?php echo $item['title']; ?></a></h4>
-									<p>Web ID: 1089772</p>
+									<p>Web ID: <?php echo $id; ?></p>
 								</td>
 
 								<td class="cart_price">
@@ -218,26 +198,27 @@ if (!empty($cartGroup)) {
 
 								<td class="cart_quantity">
 									<div class="cart_quantity_button">
-										<a class="cart_quantity_up" href=""> + </a>
-										<input class="cart_quantity_input" type="text" value="<?php echo $item['qty']; ?>" autocomplete="off" size="2">
-										<a class="cart_quantity_down" href=""> - </a>
+										<a class="cart_quantity_up" href="?action=plus&id=<?php echo $id; ?>"> + </a>
+										<input class="cart_quantity_input" type="text"
+											value="<?php echo $item['qty']; ?>" size="2" readonly>
+										<a class="cart_quantity_down" href="?action=minus&id=<?php echo $id; ?>"> - </a>
 									</div>
 								</td>
 
 								<td class="cart_total">
-									<p class="cart_total_price">$<?php echo $item['total']; ?></p>
+									<p class="cart_total_price">$<?php echo $itemTotal; ?></p>
 								</td>
 
 								<td class="cart_delete">
-									<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+									<a class="cart_quantity_delete" href="?action=remove&id=<?php echo $id; ?>">
+										<i class="fa fa-times"></i>
+									</a>
 								</td>
 							</tr>
-
-						<?php 
-							}
-						}
-						?>
+						<?php endforeach; ?>
+					<?php endif; ?>
 					</tbody>
+
 
 				</table>
 			</div>
@@ -314,9 +295,10 @@ if (!empty($cartGroup)) {
 							<li>Shipping Cost <span>Free</span></li>
 							<li>Total <span>$<?php echo $cartTotal + 2; ?></span></li>
 						</ul>
-							<a class="btn btn-default update" href="">Update</a>
-							<a class="btn btn-default check_out" href="">Check Out</a>
+						<a class="btn btn-default update" href="">Update</a>
+						<a class="btn btn-default check_out" href="">Check Out</a>
 					</div>
+
 				</div>
 			</div>
 		</div>

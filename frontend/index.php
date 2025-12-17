@@ -2,23 +2,27 @@
 session_start();
 
 if (isset($_POST['addCart'])) {
-    // lay du lieu
+
+    $id    = $_POST['id'];     
     $title = $_POST['title'];
     $price = $_POST['price'];
-    $img = $_POST['img'];
+    $img   = $_POST['img'];
 
-    // array
-    $product = [
-        'title' => $title,
-        'price' => $price,
-        'img' => $img
-    ];
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = [];
+    }
 
-    $_SESSION['cart'][] = $product;
-
-    // echo "<pre>";
-    // print_r($_SESSION['cart']);
-
+    if (isset($_SESSION['cart'][$id])) {
+        $_SESSION['cart'][$id]['qty'] += 1;
+    } 
+    else {
+        $_SESSION['cart'][$id] = [
+            'title' => $title,
+            'price' => $price,
+            'img'   => $img,
+            'qty'   => 1
+        ];
+    }
 }
 ?>
 
@@ -392,7 +396,7 @@ if (isset($_POST['addCart'])) {
 											<input type="hidden" name="price" value="56">
 											<input type="hidden" name="title" value="Easy Polo Black Edition">
 											<input type="hidden" name="img" value="images/home/product1.jpg">
-
+											<input type="hidden" name="id" value="1">
 											<button type="submit" name="addCart" class="btn btn-default add-to-cart">
 												<i class="fa fa-shopping-cart"></i> Add to cart
 											</button>
@@ -417,7 +421,7 @@ if (isset($_POST['addCart'])) {
 											<input type="hidden" name="price" value="56">
 											<input type="hidden" name="title" value="Easy Polo Black Edition">
 											<input type="hidden" name="img" value="images/home/product2.jpg">
-
+											<input type="hidden" name="id" value="2">
 											<button type="submit" name="addCart" class="btn btn-default add-to-cart">
 												<i class="fa fa-shopping-cart"></i> Add to cart
 											</button>
@@ -442,7 +446,7 @@ if (isset($_POST['addCart'])) {
 											<input type="hidden" name="price" value="56">
 											<input type="hidden" name="title" value="Easy Polo Black Edition">
 											<input type="hidden" name="img" value="images/home/product3.jpg">
-
+											<input type="hidden" name="id" value="3">
 											<button type="submit" name="addCart" class="btn btn-default add-to-cart">
 												<i class="fa fa-shopping-cart"></i> Add to cart
 											</button>
@@ -468,7 +472,7 @@ if (isset($_POST['addCart'])) {
 											<input type="hidden" name="price" value="56">
 											<input type="hidden" name="title" value="Easy Polo Black Edition">
 											<input type="hidden" name="img" value="images/home/product4.jpg">
-
+											<input type="hidden" name="id" value="4">
 											<button type="submit" name="addCart" class="btn btn-default add-to-cart">
 												<i class="fa fa-shopping-cart"></i> Add to cart
 											</button>
@@ -494,7 +498,7 @@ if (isset($_POST['addCart'])) {
 											<input type="hidden" name="price" value="56">
 											<input type="hidden" name="title" value="Easy Polo Black Edition">
 											<input type="hidden" name="img" value="images/home/product5.jpg">
-
+											<input type="hidden" name="id" value="5">
 											<button type="submit" name="addCart" class="btn btn-default add-to-cart">
 												<i class="fa fa-shopping-cart"></i> Add to cart
 											</button>
@@ -519,7 +523,7 @@ if (isset($_POST['addCart'])) {
 											<input type="hidden" name="price" value="56">
 											<input type="hidden" name="title" value="Easy Polo Black Edition">
 											<input type="hidden" name="img" value="images/home/product6.jpg">
-
+											<input type="hidden" name="id" value="6">
 											<button type="submit" name="addCart" class="btn btn-default add-to-cart">
 												<i class="fa fa-shopping-cart"></i> Add to cart
 											</button>
