@@ -7,31 +7,20 @@ $avatarName = '';
 
 if (isset($_POST['register'])) {
 
-    // ======================
-    // LẤY DỮ LIỆU
-    // ======================
     $email    = trim($_POST['email'] ?? '');
     $password = trim($_POST['password'] ?? '');
     $name     = trim($_POST['name'] ?? '');
 
-    // ======================
-    // VALIDATE TEXT
-    // ======================
     if ($email == '') {
         $errors['email'] = 'Email không được để trống';
     }
-
     if ($password == '') {
         $errors['password'] = 'Password không được để trống';
     }
-
     if ($name == '') {
         $errors['name'] = 'Name không được để trống';
     }
 
-    // ======================
-    // VALIDATE AVATAR
-    // ======================
     if (empty($_FILES['avatar']['name'])) {
         $errors['avatar'] = 'Bạn chưa chọn avatar';
     } else {
@@ -40,7 +29,7 @@ if (isset($_POST['register'])) {
             $errors['avatar'] = 'File upload bị lỗi';
         } else {
 
-            $maxSize = 1024 * 1024; // 1MB
+            $maxSize = 1024 * 1024; 
             if ($_FILES['avatar']['size'] > $maxSize) {
                 $errors['avatar'] = 'Avatar phải nhỏ hơn 1MB';
             } else {
@@ -55,16 +44,12 @@ if (isset($_POST['register'])) {
                     $errors['avatar'] = 'Avatar phải là hình ảnh (jpg, jpeg, png)';
                 } else {
 
-                    // Tạo tên file mới tránh trùng
                     $avatarName = time() . '_' . $fileName;
                 }
             }
         }
     }
-
-    // ======================
-    // INSERT DB
-    // ======================
+    // insert
     if (empty($errors)) {
 
         $uploadDir = './uploads/';

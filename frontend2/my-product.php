@@ -2,13 +2,11 @@
 session_start();
 include 'connect.php';
 
-// Chặn nếu chưa login
 if (!isset($_SESSION['login'])) {
     header('Location: login.php');
     exit;
 }
 
-// Lấy danh sách sản phẩm
 $userId = $_SESSION['user_id'];
 
 $sql = "SELECT * FROM products
@@ -106,11 +104,26 @@ $result = $con->query($sql);
 					<div class="col-md-8 clearfix">
 						<div class="shop-menu clearfix pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href=""><i class="fa fa-user"></i> Account</a></li>
+								<li><a href="account.php"><i class="fa fa-user"></i> Account</a></li>
 								<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
 								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-								<li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
+								<?php if (!isset($_SESSION['login'])): ?>
+								<li>
+									<a href="login.php">
+										<i class="fa fa-lock"></i> Login
+									</a>
+								</li>
+
+								<?php else: ?>
+
+									<li>
+										<a href="#" id="logoutBtn">
+											<i class="fa fa-sign-out"></i> Logout
+										</a>
+									</li>
+
+								<?php endif; ?>
 							</ul>
 						</div>
 					</div>
@@ -419,4 +432,15 @@ $result = $con->query($sql);
     <script src="js/jquery.prettyPhoto.js"></script>
     <script src="js/main.js"></script>
 </body>
+<script>
+$(document).ready(function () {
+    $('#logoutBtn').click(function (e) {
+        e.preventDefault();
+
+        if (confirm('Bạn có chắc muốn logout không?')) {
+            window.location.href = 'logout.php';
+        }
+    });
+});
+</script>
 </html>

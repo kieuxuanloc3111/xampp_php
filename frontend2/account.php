@@ -10,23 +10,16 @@ if (!isset($_SESSION['login'])) {
 $userId = $_SESSION['user_id'];
 $errors = [];
 
-// ======================
-// LẤY THÔNG TIN USER
-// ======================
 $sql = "SELECT * FROM users WHERE id = $userId";
 $result = $con->query($sql);
 $user = $result->fetch_assoc();
 
-// ======================
-// XỬ LÝ UPDATE
-// ======================
 if (isset($_POST['update'])) {
 
     $name     = trim($_POST['name'] ?? '');
     $email    = trim($_POST['email'] ?? '');
     $password = trim($_POST['password'] ?? '');
 
-    // ===== VALIDATE TEXT =====
     if ($name == '') {
         $errors['name'] = 'Name không được để trống';
     }
@@ -35,8 +28,7 @@ if (isset($_POST['update'])) {
         $errors['email'] = 'Email không được để trống';
     }
 
-    // ===== VALIDATE AVATAR =====
-    $avatarName = $user['avatar']; // mặc định giữ ảnh cũ
+    $avatarName = $user['avatar']; 
 
     if (!empty($_FILES['avatar']['name'])) {
 
@@ -44,7 +36,7 @@ if (isset($_POST['update'])) {
             $errors['avatar'] = 'File upload bị lỗi';
         } else {
 
-            $maxSize = 1024 * 1024; // 1MB
+            $maxSize = 1024 * 1024; 
             if ($_FILES['avatar']['size'] > $maxSize) {
                 $errors['avatar'] = 'Avatar phải nhỏ hơn 1MB';
             } else {
@@ -64,10 +56,8 @@ if (isset($_POST['update'])) {
         }
     }
 
-    // ===== UPDATE DB =====
     if (empty($errors)) {
 
-        // upload ảnh nếu có chọn ảnh mới
         if (!empty($_FILES['avatar']['name'])) {
             $uploadDir = './uploads/';
             if (!is_dir($uploadDir)) {
@@ -80,7 +70,7 @@ if (isset($_POST['update'])) {
             );
         }
 
-        // câu SQL
+        //  SQL
         if ($password != '') {
             $passwordMd5 = md5($password);
             $sql = "UPDATE users SET
@@ -205,7 +195,22 @@ if (isset($_POST['update'])) {
 								<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
 								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-								<li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
+								<?php if (!isset($_SESSION['login'])): ?>
+								<li>
+									<a href="login.php">
+										<i class="fa fa-lock"></i> Login
+									</a>
+								</li>
+
+								<?php else: ?>
+
+									<li>
+										<a href="#" id="logoutBtn">
+											<i class="fa fa-sign-out"></i> Logout
+										</a>
+									</li>
+
+								<?php endif; ?>
 							</ul>
 						</div>
 					</div>
@@ -508,4 +513,17 @@ if (isset($_POST['update'])) {
     <script src="js/jquery.prettyPhoto.js"></script>
     <script src="js/main.js"></script>
 </body>
+<script src="js/jquery.js"></script>
+
+<script>
+$(document).ready(function () {
+    $('#logoutBtn').click(function (e) {
+        e.preventDefault();
+
+        if (confirm('Bạn có chắc muốn logout không?')) {
+            window.location.href = 'logout.php';
+        }
+    });
+});
+</script>
 </html>

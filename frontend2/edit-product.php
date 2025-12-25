@@ -2,9 +2,6 @@
 session_start();
 include 'connect.php';
 
-// ======================
-// CHECK LOGIN
-// ======================
 if (!isset($_SESSION['login'])) {
     header('Location: login.php');
     exit;
@@ -14,18 +11,12 @@ $userId = $_SESSION['user_id'];
 $errors = [];
 $title = $price = '';
 
-// ======================
-// CHECK ID PRODUCT
-// ======================
 if (!isset($_GET['id'])) {
     die('Thiếu ID sản phẩm');
 }
 
 $productId = (int)$_GET['id'];
 
-// ======================
-// LẤY PRODUCT (CHỈ CỦA USER)
-// ======================
 $sql = "SELECT * FROM products 
         WHERE id = $productId AND user_id = $userId";
 $result = $con->query($sql);
@@ -36,20 +27,15 @@ if ($result->num_rows == 0) {
 
 $product = $result->fetch_assoc();
 
-// gán dữ liệu cũ
 $title = $product['title'];
 $price = $product['price'];
 $imageOld = $product['image'];
 
-// ======================
-// XỬ LÝ SUBMIT
-// ======================
 if (isset($_POST['update_product'])) {
 
     $title = trim($_POST['title'] ?? '');
     $price = trim($_POST['price'] ?? '');
 
-    // ===== VALIDATE TEXT =====
     if ($title == '') {
         $errors['title'] = 'Tên sản phẩm không được để trống';
     }
@@ -58,7 +44,6 @@ if (isset($_POST['update_product'])) {
         $errors['price'] = 'Giá không được để trống';
     }
 
-    // ===== VALIDATE IMAGE (NẾU CÓ CHỌN) =====
     $imageName = $imageOld;
 
     if (!empty($_FILES['image']['name'])) {
@@ -67,7 +52,7 @@ if (isset($_POST['update_product'])) {
             $errors['image'] = 'File upload bị lỗi';
         } else {
 
-            $maxSize = 1024 * 1024; // 1MB
+            $maxSize = 1024 * 1024; 
             if ($_FILES['image']['size'] > $maxSize) {
                 $errors['image'] = 'Ảnh phải nhỏ hơn 1MB';
             } else {
@@ -87,10 +72,9 @@ if (isset($_POST['update_product'])) {
         }
     }
 
-    // ===== UPDATE DB =====
     if (empty($errors)) {
 
-        // upload ảnh mới nếu có
+        // ảnh mới 
         if (!empty($_FILES['image']['name'])) {
             $uploadDir = './uploads/';
             if (!is_dir($uploadDir)) {
@@ -206,11 +190,26 @@ if (isset($_POST['update_product'])) {
 					<div class="col-md-8 clearfix">
 						<div class="shop-menu clearfix pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href=""><i class="fa fa-user"></i> Account</a></li>
+                                <li><a href="account.php"><i class="fa fa-user"></i> Account</a></li>
 								<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
 								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-								<li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
+								<?php if (!isset($_SESSION['login'])): ?>
+								<li>
+									<a href="login.php">
+										<i class="fa fa-lock"></i> Login
+									</a>
+								</li>
+
+								<?php else: ?>
+
+									<li>
+										<a href="#" id="logoutBtn">
+											<i class="fa fa-sign-out"></i> Logout
+										</a>
+									</li>
+
+								<?php endif; ?>
 							</ul>
 						</div>
 					</div>
@@ -279,7 +278,9 @@ if (isset($_POST['update_product'])) {
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">My product</a></h4>
+									<h4 class="panel-title">
+										<a href="my-product.php">My product</a>
+									</h4>
 								</div>
 							</div>
 							
@@ -494,4 +495,15 @@ if (isset($_POST['update_product'])) {
     <script src="js/jquery.prettyPhoto.js"></script>
     <script src="js/main.js"></script>
 </body>
+<script>
+$(document).ready(function () {
+    $('#logoutBtn').click(function (e) {
+        e.preventDefault();
+
+        if (confirm('Bạn có chắc muốn logout không?')) {
+            window.location.href = 'logout.php';
+        }
+    });
+});
+</script>
 </html>

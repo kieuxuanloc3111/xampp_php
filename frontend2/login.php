@@ -7,15 +7,9 @@ $email = '';
 
 if (isset($_POST['login'])) {
 
-    // ======================
-    // LẤY DỮ LIỆU
-    // ======================
     $email    = trim($_POST['email'] ?? '');
     $password = trim($_POST['password'] ?? '');
 
-    // ======================
-    // VALIDATE
-    // ======================
     if ($email == '') {
         $errors['email'] = 'Email không được để trống';
     }
@@ -24,14 +18,10 @@ if (isset($_POST['login'])) {
         $errors['password'] = 'Password không được để trống';
     }
 
-    // ======================
-    // CHECK LOGIN
-    // ======================
     if (empty($errors)) {
 
         $passwordMd5 = md5($password);
 
-        // SQL kiểm tra user
         $sql = "SELECT * FROM users 
                 WHERE email = '$email' 
                 AND password = '$passwordMd5'";
@@ -42,18 +32,12 @@ if (isset($_POST['login'])) {
 
             $user = $result->fetch_assoc();
 
-            // ======================
-            // LƯU SESSION
-            // ======================
             $_SESSION['login'] = true;
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_email'] = $user['email'];
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['user_avatar'] = $user['avatar'];
 
-            // ======================
-            // CHUYỂN TRANG
-            // ======================
             header('Location: index.php');
             exit;
 
