@@ -1,3 +1,123 @@
+<?php
+session_start();
+include 'connect.php';
+
+// ======================
+// CHECK LOGIN
+// ======================
+if (!isset($_SESSION['login'])) {
+    header('Location: login.php');
+    exit;
+}
+
+$userId = $_SESSION['user_id'];
+$errors = [];
+$title = $price = '';
+
+// ======================
+// CHECK ID PRODUCT
+// ======================
+if (!isset($_GET['id'])) {
+    die('Thiếu ID sản phẩm');
+}
+
+$productId = (int)$_GET['id'];
+
+// ======================
+// LẤY PRODUCT (CHỈ CỦA USER)
+// ======================
+$sql = "SELECT * FROM products 
+        WHERE id = $productId AND user_id = $userId";
+$result = $con->query($sql);
+
+if ($result->num_rows == 0) {
+    die('Sản phẩm không tồn tại hoặc bạn không có quyền sửa');
+}
+
+$product = $result->fetch_assoc();
+
+// gán dữ liệu cũ
+$title = $product['title'];
+$price = $product['price'];
+$imageOld = $product['image'];
+
+// ======================
+// XỬ LÝ SUBMIT
+// ======================
+if (isset($_POST['update_product'])) {
+
+    $title = trim($_POST['title'] ?? '');
+    $price = trim($_POST['price'] ?? '');
+
+    // ===== VALIDATE TEXT =====
+    if ($title == '') {
+        $errors['title'] = 'Tên sản phẩm không được để trống';
+    }
+
+    if ($price == '') {
+        $errors['price'] = 'Giá không được để trống';
+    }
+
+    // ===== VALIDATE IMAGE (NẾU CÓ CHỌN) =====
+    $imageName = $imageOld;
+
+    if (!empty($_FILES['image']['name'])) {
+
+        if ($_FILES['image']['error'] !== 0) {
+            $errors['image'] = 'File upload bị lỗi';
+        } else {
+
+            $maxSize = 1024 * 1024; // 1MB
+            if ($_FILES['image']['size'] > $maxSize) {
+                $errors['image'] = 'Ảnh phải nhỏ hơn 1MB';
+            } else {
+
+                $fileName = $_FILES['image']['name'];
+                $parts = explode('.', $fileName);
+                $fileExt = strtolower(end($parts));
+
+                $allowExt = ['jpg', 'jpeg', 'png'];
+
+                if (!in_array($fileExt, $allowExt)) {
+                    $errors['image'] = 'Chỉ cho phép ảnh jpg, jpeg, png';
+                } else {
+                    $imageName = time() . '_' . $fileName;
+                }
+            }
+        }
+    }
+
+    // ===== UPDATE DB =====
+    if (empty($errors)) {
+
+        // upload ảnh mới nếu có
+        if (!empty($_FILES['image']['name'])) {
+            $uploadDir = './uploads/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            move_uploaded_file(
+                $_FILES['image']['tmp_name'],
+                $uploadDir . $imageName
+            );
+        }
+
+        $sql = "UPDATE products SET
+                    title = '$title',
+                    price = '$price',
+                    image = '$imageName'
+                WHERE id = $productId AND user_id = $userId";
+
+        if ($con->query($sql)) {
+            echo "<p style='color:green'>Cập nhật sản phẩm thành công</p>";
+        } else {
+            echo "Lỗi SQL: " . $con->error;
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -168,20 +288,41 @@
 						
 					</div>
 				</div>
-				<div class="col-sm-9">
-					<div class="blog-post-area">
-						<h2 class="title text-center">Update user</h2>
-						 <div class="signup-form"><!--sign up form-->
-						<h2>New User Signup!</h2>
-						<form action="#">
-							<input type="text" placeholder="Name"/>
-							<input type="email" placeholder="Email Address"/>
-							<input type="password" placeholder="Password"/>
-							<button type="submit" class="btn btn-default">Signup</button>
-						</form>
-					</div>
-					</div>
-				</div>
+                <div class="col-sm-9">
+                    <div class="blog-post-area">
+                        <h2 class="title text-center">Edit Product</h2>
+
+                        <div class="signup-form">
+                            <h2>Edit product</h2>
+
+                            <form method="post" enctype="multipart/form-data">
+
+                                <input type="text" name="title" placeholder="Product title"
+                                    value="<?php echo $title; ?>">
+                                <p style="color:red"><?php echo $errors['title'] ?? ''; ?></p>
+
+                                <input type="number" step="0.01" name="price" placeholder="Price"
+                                    value="<?php echo $price; ?>">
+                                <p style="color:red"><?php echo $errors['price'] ?? ''; ?></p>
+
+                                <p>
+                                    Image hiện tại:<br>
+                                    <img src="uploads/<?php echo $imageOld; ?>" width="100">
+                                </p>
+
+                                <input type="file" name="image">
+                                <p style="color:red"><?php echo $errors['image'] ?? ''; ?></p>
+
+                                <button type="submit" name="update_product" class="btn btn-default">
+                                    Update product
+                                </button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
 			</div>
 		</div>
 	</section>

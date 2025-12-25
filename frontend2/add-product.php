@@ -1,3 +1,89 @@
+<?php
+session_start();
+include 'connect.php';
+$userId = $_SESSION['user_id'];
+if (!isset($_SESSION['login'])) {
+    header('Location: login.php');
+    exit;
+}
+
+$errors = [];
+$title = '';
+$price = '';
+$imageName = '';
+
+if (isset($_POST['add_product'])) {
+
+    $title = trim($_POST['title'] ?? '');
+    $price = trim($_POST['price'] ?? '');
+
+    // ===== VALIDATE TEXT =====
+    if ($title == '') {
+        $errors['title'] = 'Tên sản phẩm không được để trống';
+    }
+
+    if ($price == '') {
+        $errors['price'] = 'Giá không được để trống';
+    }
+
+    // ===== VALIDATE IMAGE =====
+    if (empty($_FILES['image']['name'])) {
+        $errors['image'] = 'Bạn chưa chọn hình ảnh';
+    } else {
+
+        if ($_FILES['image']['error'] !== 0) {
+            $errors['image'] = 'File upload bị lỗi';
+        } else {
+
+            $maxSize = 1024 * 1024; // 1MB
+            if ($_FILES['image']['size'] > $maxSize) {
+                $errors['image'] = 'Hình ảnh phải nhỏ hơn 1MB';
+            } else {
+
+                $fileName = $_FILES['image']['name'];
+                $parts = explode('.', $fileName);
+                $ext = strtolower(end($parts));
+
+                $allowExt = ['jpg', 'jpeg', 'png'];
+
+                if (!in_array($ext, $allowExt)) {
+                    $errors['image'] = 'Chỉ cho phép ảnh jpg, jpeg, png';
+                } else {
+                    $imageName = time() . '_' . $fileName;
+                }
+            }
+        }
+    }
+
+    // ===== INSERT DB =====
+    if (empty($errors)) {
+
+        $uploadDir = './uploads/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $imageName)) {
+
+			$sql = "INSERT INTO products (user_id, title, price, image)
+        	VALUES ('$userId', '$title', '$price', '$imageName')";
+
+
+            if ($con->query($sql)) {
+                echo "<p style='color:green'>Thêm sản phẩm thành công</p>";
+                $title = $price = '';
+            } else {
+                echo "Lỗi SQL: " . $con->error;
+            }
+
+        } else {
+            $errors['image'] = 'Upload hình ảnh thất bại';
+        }
+    }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -170,18 +256,33 @@
 				</div>
 				<div class="col-sm-9">
 					<div class="blog-post-area">
-						<h2 class="title text-center">Update user</h2>
-						 <div class="signup-form"><!--sign up form-->
-						<h2>New User Signup!</h2>
-						<form action="#">
-							<input type="text" placeholder="Name"/>
-							<input type="email" placeholder="Email Address"/>
-							<input type="password" placeholder="Password"/>
-							<button type="submit" class="btn btn-default">Signup</button>
-						</form>
-					</div>
+						<h2 class="title text-center">Add Product</h2>
+
+						<div class="signup-form">
+							<h2>Add new product</h2>
+
+							<form method="post" enctype="multipart/form-data">
+
+								<input type="text" name="title" placeholder="Product title"
+									value="<?php echo $title; ?>">
+								<p style="color:red"><?php echo $errors['title'] ?? ''; ?></p>
+
+								<input type="number" name="price" placeholder="Price"
+									value="<?php echo $price; ?>">
+								<p style="color:red"><?php echo $errors['price'] ?? ''; ?></p>
+
+								<input type="file" name="image">
+								<p style="color:red"><?php echo $errors['image'] ?? ''; ?></p>
+
+								<button type="submit" name="add_product" class="btn btn-default">
+									Add product
+								</button>
+
+							</form>
+						</div>
 					</div>
 				</div>
+
 			</div>
 		</div>
 	</section>

@@ -1,3 +1,118 @@
+<?php
+session_start();
+include 'connect.php';
+
+if (!isset($_SESSION['login'])) {
+    header('Location: login.php');
+    exit;
+}
+
+$userId = $_SESSION['user_id'];
+$errors = [];
+
+// ======================
+// LẤY THÔNG TIN USER
+// ======================
+$sql = "SELECT * FROM users WHERE id = $userId";
+$result = $con->query($sql);
+$user = $result->fetch_assoc();
+
+// ======================
+// XỬ LÝ UPDATE
+// ======================
+if (isset($_POST['update'])) {
+
+    $name     = trim($_POST['name'] ?? '');
+    $email    = trim($_POST['email'] ?? '');
+    $password = trim($_POST['password'] ?? '');
+
+    // ===== VALIDATE TEXT =====
+    if ($name == '') {
+        $errors['name'] = 'Name không được để trống';
+    }
+
+    if ($email == '') {
+        $errors['email'] = 'Email không được để trống';
+    }
+
+    // ===== VALIDATE AVATAR =====
+    $avatarName = $user['avatar']; // mặc định giữ ảnh cũ
+
+    if (!empty($_FILES['avatar']['name'])) {
+
+        if ($_FILES['avatar']['error'] !== 0) {
+            $errors['avatar'] = 'File upload bị lỗi';
+        } else {
+
+            $maxSize = 1024 * 1024; // 1MB
+            if ($_FILES['avatar']['size'] > $maxSize) {
+                $errors['avatar'] = 'Avatar phải nhỏ hơn 1MB';
+            } else {
+
+                $fileName = $_FILES['avatar']['name'];
+                $parts = explode('.', $fileName);
+                $fileExt = strtolower(end($parts));
+
+                $allowExt = ['jpg', 'jpeg', 'png'];
+
+                if (!in_array($fileExt, $allowExt)) {
+                    $errors['avatar'] = 'Avatar phải là hình ảnh (jpg, jpeg, png)';
+                } else {
+                    $avatarName = time() . '_' . $fileName;
+                }
+            }
+        }
+    }
+
+    // ===== UPDATE DB =====
+    if (empty($errors)) {
+
+        // upload ảnh nếu có chọn ảnh mới
+        if (!empty($_FILES['avatar']['name'])) {
+            $uploadDir = './uploads/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            move_uploaded_file(
+                $_FILES['avatar']['tmp_name'],
+                $uploadDir . $avatarName
+            );
+        }
+
+        // câu SQL
+        if ($password != '') {
+            $passwordMd5 = md5($password);
+            $sql = "UPDATE users SET
+                        name = '$name',
+                        email = '$email',
+                        password = '$passwordMd5',
+                        avatar = '$avatarName'
+                    WHERE id = $userId";
+        } else {
+            $sql = "UPDATE users SET
+                        name = '$name',
+                        email = '$email',
+                        avatar = '$avatarName'
+                    WHERE id = $userId";
+        }
+
+        if ($con->query($sql)) {
+
+            // cập nhật lại session
+            $_SESSION['user_name']   = $name;
+            $_SESSION['user_email']  = $email;
+            $_SESSION['user_avatar'] = $avatarName;
+
+            echo "<p style='color:green'>Update thành công</p>";
+        } else {
+            echo "Lỗi SQL: " . $con->error;
+        }
+    }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -149,103 +264,79 @@
 				<div class="col-sm-3">
 					<div class="left-sidebar">
 						<h2>Account</h2>
-						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
+
+						<div class="panel-group category-products" id="accordian">
 							
-							
+							<!-- ADD PRODUCT -->
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">account</a></h4>
+									<h4 class="panel-title">
+										<a href="add-product.php">Add product</a>
+									</h4>
 								</div>
 							</div>
+
+							<!-- ACCOUNT -->
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">My product</a></h4>
+									<h4 class="panel-title">
+										<a href="account.php">Account</a>
+									</h4>
 								</div>
 							</div>
-							
+
+							<!-- MY PRODUCT -->
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a href="my-product.php">My product</a>
+									</h4>
+								</div>
+							</div>
+
 						</div><!--/category-products-->
-					
-						
 					</div>
 				</div>
+
 				<div class="col-sm-9">
-					<div class="table-responsive cart_info">
-						<table class="table table-condensed">
-							<thead>
-								<tr class="cart_menu">
-									<td class="image">image</td>
-									<td class="description">name</td>
-									<td class="price">price</td>
-									
-									<td class="total">action</td>
-									
-								</tr>
-							</thead>
-							<tbody>
+					<div class="blog-post-area">
+						<h2 class="title text-center">Update User</h2>
 
-								
-								<tr>
-									<td class="cart_product">
-										<a href=""><img src="images/cart/one.png" alt=""></a>
-									</td>
-									<td class="cart_description">
-										<h4><a href="">Colorblock Scuba</a></h4>
-										
-									</td>
-									<td class="cart_price">
-										<p>$59</p>
-									</td>
-									
-									<td class="cart_total">
-										<a>edit</a>
-										<a>delete</a>
-									</td>
-									
-								</tr>
-								<tr>
-									<td class="cart_product">
-										<a href=""><img src="images/cart/one.png" alt=""></a>
-									</td>
-									<td class="cart_description">
-										<h4><a href="">Colorblock Scuba</a></h4>
-										
-									</td>
-									<td class="cart_price">
-										<p>$59</p>
-									</td>
-									
-									<td class="cart_total">
-										<a>edit</a>
-										<a>delete</a>
-									</td>
-									
-								</tr>
-								<tr>
-									<td class="cart_product">
-										<a href=""><img src="images/cart/one.png" alt=""></a>
-									</td>
-									<td class="cart_description">
-										<h4><a href="">Colorblock Scuba</a></h4>
-										
-									</td>
-									<td class="cart_price">
-										<p>$59</p>
-									</td>
-									
-									<td class="cart_total">
-										<a>edit</a>
-										<a>delete</a>
-									</td>
-									
-								</tr>
+						<div class="signup-form">
+							<h2>Update Information</h2>
 
+							<form method="post" enctype="multipart/form-data">
 
+								<input type="text" name="name" placeholder="Name"
+									value="<?php echo $user['name']; ?>">
+								<p style="color:red"><?php echo $errors['name'] ?? ''; ?></p>
 
-							
-							</tbody>
-						</table>
+								<input type="email" name="email" placeholder="Email Address"
+									value="<?php echo $user['email']; ?>">
+								<p style="color:red"><?php echo $errors['email'] ?? ''; ?></p>
+
+								<input type="password" name="password"
+									placeholder="New Password (optional)">
+
+								<!-- AVATAR -->
+								<p>
+									Avatar hiện tại:<br>
+									<img src="uploads/<?php echo $user['avatar']; ?>"
+										width="100">
+								</p>
+
+								<input type="file" name="avatar">
+								<p style="color:red"><?php echo $errors['avatar'] ?? ''; ?></p>
+
+								<button type="submit" name="update" class="btn btn-default">
+									Update
+								</button>
+
+							</form>
+						</div>
 					</div>
 				</div>
+
 			</div>
 		</div>
 	</section>
