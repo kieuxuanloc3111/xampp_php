@@ -22,7 +22,7 @@ $sql = "SELECT * FROM products
 $result = $con->query($sql);
 
 if ($result->num_rows == 0) {
-    die('Sản phẩm không tồn tại hoặc bạn không có quyền sửa');
+    die('Sản phẩm không tồn tại');
 }
 
 $product = $result->fetch_assoc();
