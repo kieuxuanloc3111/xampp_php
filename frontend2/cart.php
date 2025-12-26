@@ -1,3 +1,10 @@
+<?php
+session_start();
+
+// Lấy cart từ session
+$cart = $_SESSION['CART'] ?? [];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -89,8 +96,33 @@
 								<li><a href=""><i class="fa fa-user"></i> Account</a></li>
 								<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-								<li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
+								<li>
+									<a href="cart.php">
+										<i class="fa fa-shopping-cart"></i>
+										Cart
+										<span id="cart-count" style="color:red;font-weight:bold;">
+											<?php
+											echo !empty($cart)
+												? array_sum(array_column($cart, 'qty'))
+												: 0;
+											?>
+										</span>
+									</a>
+								</li>
+
+								<?php if (!isset($_SESSION['login'])): ?>
+									<li>
+										<a href="login.php">
+											<i class="fa fa-lock"></i> Login
+										</a>
+									</li>
+								<?php else: ?>
+									<li>
+										<a href="#" id="logoutBtn">
+											<i class="fa fa-sign-out"></i> Logout
+										</a>
+									</li>
+								<?php endif; ?>
 							</ul>
 						</div>
 					</div>
@@ -164,83 +196,61 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/one.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
+					<?php if (!empty($cart)): ?>
+						<?php foreach ($cart as $item): ?>
+							<?php
+								$totalItem = $item['price'] * $item['qty'];
+							?>
+							<tr>
+								<td class="cart_product">
+									<a href="">
+										<img src="uploads/<?php echo $item['image']; ?>" alt="" width="80">
+									</a>
+								</td>
 
+								<td class="cart_description">
+									<h4><a href=""><?php echo $item['title']; ?></a></h4>
+									<p>Web ID: <?php echo $item['id']; ?></p>
+								</td>
+
+								<td class="cart_price">
+									<p>$<?php echo $item['price']; ?></p>
+								</td>
+
+								<td class="cart_quantity">
+									<div class="cart_quantity_button">
+										<a class="cart_quantity_up" href="#"> + </a>
+										<input class="cart_quantity_input"
+											type="text"
+											value="<?php echo $item['qty']; ?>"
+											size="2"
+											readonly>
+										<a class="cart_quantity_down" href="#"> - </a>
+									</div>
+								</td>
+
+								<td class="cart_total">
+									<p class="cart_total_price">
+										$<?php echo $totalItem; ?>
+									</p>
+								</td>
+
+								<td class="cart_delete">
+									<a class="cart_quantity_delete" href="#">
+										<i class="fa fa-times"></i>
+									</a>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					<?php else: ?>
 						<tr>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/two.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+							<td colspan="6" style="text-align:center">
+								Giỏ hàng trống
 							</td>
 						</tr>
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/three.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
+					<?php endif; ?>
 					</tbody>
+
 				</table>
 			</div>
 		</div>
@@ -489,4 +499,17 @@
     <script src="js/jquery.prettyPhoto.js"></script>
     <script src="js/main.js"></script>
 </body>
+<script src="js/jquery.js"></script>
+
+<script>
+$(document).ready(function () {
+    $('#logoutBtn').click(function (e) {
+        e.preventDefault();
+
+        if (confirm('Bạn có chắc muốn logout không?')) {
+            window.location.href = 'logout.php';
+        }
+    });
+});
+</script>
 </html>
