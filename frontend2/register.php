@@ -1,4 +1,5 @@
 <?php
+include 'session_time.php';
 include 'connect.php';
 
 $errors = [];

@@ -1,5 +1,7 @@
 <?php
-session_start();
+// session_set_cookie_params(3600);
+// session_start();
+include 'session_time.php';
 include 'connect.php';
 
 $errors = [];
@@ -32,6 +34,13 @@ if (isset($_POST['login'])) {
 
             $user = $result->fetch_assoc();
 
+            // 🔥 QUAN TRỌNG: RESET SESSION TẠI ĐÂY
+            session_regenerate_id(true);
+
+            // 🔥 XÓA CART CŨ (NẾU CÓ)
+            // unset($_SESSION['CART']);
+
+            // SET SESSION USER
             $_SESSION['login'] = true;
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_email'] = $user['email'];
@@ -47,6 +56,7 @@ if (isset($_POST['login'])) {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

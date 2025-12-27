@@ -1,12 +1,24 @@
 <?php
-session_start();
+// session_set_cookie_params(3600);
+// session_start();
+include 'session_time.php';
 include 'connect.php';
+
+// ======================
+// 0. CHECK LOGIN
+// ======================
+if (!isset($_SESSION['user_id'])) {
+    echo 0;
+    exit;
+}
+
+$userId = $_SESSION['user_id'];
 
 // ======================
 // 1. NHẬN PRODUCT ID
 // ======================
 if (!isset($_POST['product_id'])) {
-    echo "Thiếu product_id";
+    echo 0;
     exit;
 }
 
@@ -19,53 +31,50 @@ $sql = "SELECT id, title, price, image FROM products WHERE id = $productId";
 $result = $con->query($sql);
 
 if ($result->num_rows == 0) {
-    echo "Sản phẩm không tồn tại";
+    echo 0;
     exit;
 }
 
 $product = $result->fetch_assoc();
 
 // ======================
-// 3. KHỞI TẠO CART NẾU CHƯA CÓ
+// 3. KHỞI TẠO CART THEO USER
 // ======================
-if (!isset($_SESSION['CART'])) {
-    $_SESSION['CART'] = [];
+if (!isset($_SESSION['CART'][$userId])) {
+    $_SESSION['CART'][$userId] = [];
 }
 
 // ======================
-// 4. KIỂM TRA SẢN PHẨM ĐÃ CÓ TRONG CART CHƯA
+// 4. KIỂM TRA SẢN PHẨM ĐÃ CÓ CHƯA
 // ======================
 $found = false;
 
-foreach ($_SESSION['CART'] as $key => $item) {
+foreach ($_SESSION['CART'][$userId] as $key => $item) {
     if ($item['id'] == $productId) {
-        // đã có → tăng số lượng
-        $_SESSION['CART'][$key]['qty'] += 1;
+        $_SESSION['CART'][$userId][$key]['qty'] += 1;
         $found = true;
         break;
     }
 }
 
 // ======================
-// 5. NẾU CHƯA CÓ → THÊM MỚI
+// 5. CHƯA CÓ → THÊM MỚI
 // ======================
 if (!$found) {
-    $item = [
+    $_SESSION['CART'][$userId][] = [
         'id'    => $product['id'],
         'title' => $product['title'],
         'price' => $product['price'],
         'image' => $product['image'],
         'qty'   => 1
     ];
-
-    $_SESSION['CART'][] = $item;
 }
 
 // ======================
-// 6. TRẢ KẾT QUẢ CHO JS
+// 6. TRẢ TỔNG SỐ LƯỢNG CHO JS
 // ======================
 $totalQty = 0;
-foreach ($_SESSION['CART'] as $item) {
+foreach ($_SESSION['CART'][$userId] as $item) {
     $totalQty += $item['qty'];
 }
 

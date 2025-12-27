@@ -1,8 +1,10 @@
 <?php
-session_start();
+// session_set_cookie_params(3600);
+// session_start();
+include 'session_time.php';
+$userId = $_SESSION['user_id'] ?? 0;
+$cart = $_SESSION['CART'][$userId] ?? [];
 
-// Lấy cart từ session
-$cart = $_SESSION['CART'] ?? [];
 ?>
 
 <!DOCTYPE html>
@@ -195,61 +197,56 @@ $cart = $_SESSION['CART'] ?? [];
 							<td></td>
 						</tr>
 					</thead>
-					<tbody>
-					<?php if (!empty($cart)): ?>
-						<?php foreach ($cart as $item): ?>
-							<?php
-								$totalItem = $item['price'] * $item['qty'];
-							?>
+						<tbody>
+						<?php if (!empty($cart)): ?>
+							<?php foreach ($cart as $item): ?>
+								<?php $totalItem = $item['price'] * $item['qty']; ?>
+								<tr data-id="<?php echo $item['id']; ?>">
+
+									<td class="cart_product">
+										<img src="uploads/<?php echo $item['image']; ?>" width="80">
+									</td>
+
+									<td class="cart_description">
+										<h4><?php echo $item['title']; ?></h4>
+										<p>Web ID: <?php echo $item['id']; ?></p>
+									</td>
+
+									<td class="cart_price">
+										<p class="price"><?php echo $item['price']; ?></p>
+									</td>
+
+									<td class="cart_quantity">
+										<div class="cart_quantity_button">
+											<a class="cart_quantity_up" href="#"> + </a>
+											<input class="cart_quantity_input"
+												type="text"
+												value="<?php echo $item['qty']; ?>"
+												size="2"
+												readonly>
+											<a class="cart_quantity_down" href="#"> - </a>
+										</div>
+									</td>
+
+									<td class="cart_total">
+										<p class="cart_total_price"><?php echo $totalItem; ?></p>
+									</td>
+
+									<td class="cart_delete">
+										<a class="cart_quantity_delete" href="#">
+											<i class="fa fa-times"></i>
+										</a>
+									</td>
+
+								</tr>
+							<?php endforeach; ?>
+						<?php else: ?>
 							<tr>
-								<td class="cart_product">
-									<a href="">
-										<img src="uploads/<?php echo $item['image']; ?>" alt="" width="80">
-									</a>
-								</td>
-
-								<td class="cart_description">
-									<h4><a href=""><?php echo $item['title']; ?></a></h4>
-									<p>Web ID: <?php echo $item['id']; ?></p>
-								</td>
-
-								<td class="cart_price">
-									<p>$<?php echo $item['price']; ?></p>
-								</td>
-
-								<td class="cart_quantity">
-									<div class="cart_quantity_button">
-										<a class="cart_quantity_up" href="#"> + </a>
-										<input class="cart_quantity_input"
-											type="text"
-											value="<?php echo $item['qty']; ?>"
-											size="2"
-											readonly>
-										<a class="cart_quantity_down" href="#"> - </a>
-									</div>
-								</td>
-
-								<td class="cart_total">
-									<p class="cart_total_price">
-										$<?php echo $totalItem; ?>
-									</p>
-								</td>
-
-								<td class="cart_delete">
-									<a class="cart_quantity_delete" href="#">
-										<i class="fa fa-times"></i>
-									</a>
-								</td>
+								<td colspan="6" style="text-align:center">Giỏ hàng trống</td>
 							</tr>
-						<?php endforeach; ?>
-					<?php else: ?>
-						<tr>
-							<td colspan="6" style="text-align:center">
-								Giỏ hàng trống
-							</td>
-						</tr>
-					<?php endif; ?>
-					</tbody>
+						<?php endif; ?>
+						</tbody>
+
 
 				</table>
 			</div>
@@ -512,4 +509,57 @@ $(document).ready(function () {
     });
 });
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function(){
+
+    $('.cart_quantity_up').click(function(e){
+        e.preventDefault();
+        updateCart($(this), 'plus');
+    });
+
+    $('.cart_quantity_down').click(function(e){
+        e.preventDefault();
+        updateCart($(this), 'minus');
+    });
+
+    function updateCart(btn, action) {
+
+        let row = btn.closest('tr');
+        let productId = row.data('id');
+
+        $.ajax({
+            url: 'ajax_update_cart.php',
+            method: 'POST',
+            dataType: 'json',
+            data: {
+                product_id: productId,
+                action: action
+            },
+            success: function(res){
+
+                if (!res.success) return;
+
+                // nếu item bị xoá
+                if (!res.cart || !res.cart.find(i => i.id == productId)) {
+                    row.remove();
+                } else {
+                    let item = res.cart.find(i => i.id == productId);
+
+                    row.find('.cart_quantity_input').val(item.qty);
+                    let price = parseFloat(row.find('.price').text());
+                    row.find('.cart_total_price').text(price * item.qty);
+                }
+
+                // update header cart
+                $('#cart-count').text(res.totalQty);
+
+            }
+        });
+    }
+
+});
+</script>
+
 </html>

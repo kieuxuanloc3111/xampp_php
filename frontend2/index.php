@@ -1,5 +1,7 @@
 <?php
-session_start();        
+// session_set_cookie_params(3600);
+// session_start();        
+include 'session_time.php';
 include 'connect.php'; 
 
 $sql = "SELECT * FROM products ORDER BY id DESC";
@@ -103,12 +105,21 @@ $result = $con->query($sql);
 										<i class="fa fa-shopping-cart"></i>
 										Cart
 										<span id="cart-count" style="color:red;font-weight:bold;">
-											<?php echo isset($_SESSION['CART']) 
-												? array_sum(array_column($_SESSION['CART'], 'qty')) 
-												: 0; ?>
+											<?php
+											$count = 0;
+
+											if (isset($_SESSION['user_id']) && !empty($_SESSION['CART'][$_SESSION['user_id']])) {
+												foreach ($_SESSION['CART'][$_SESSION['user_id']] as $item) {
+													$count += $item['qty'];
+												}
+											}
+
+											echo $count;
+											?>
 										</span>
 									</a>
 								</li>
+
 
 								<?php if (!isset($_SESSION['login'])): ?>
 									<li>

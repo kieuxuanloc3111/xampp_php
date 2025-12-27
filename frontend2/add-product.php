@@ -1,5 +1,7 @@
 <?php
-session_start();
+// session_set_cookie_params(3600);
+// session_start();
+include 'session_time.php';
 include 'connect.php';
 $userId = $_SESSION['user_id'];
 if (!isset($_SESSION['login'])) {

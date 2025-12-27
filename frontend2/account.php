@@ -1,5 +1,7 @@
 <?php
-session_start();
+// session_set_cookie_params(3600);
+// session_start();
+include 'session_time.php';
 include 'connect.php';
 
 if (!isset($_SESSION['login'])) {
@@ -194,7 +196,25 @@ if (isset($_POST['update'])) {
 								<li><a href=""><i class="fa fa-user"></i> Account</a></li>
 								<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								<li>
+									<a href="cart.php">
+										<i class="fa fa-shopping-cart"></i>
+										Cart
+										<span id="cart-count" style="color:red;font-weight:bold;">
+											<?php
+											$count = 0;
+
+											if (isset($_SESSION['user_id']) && !empty($_SESSION['CART'][$_SESSION['user_id']])) {
+												foreach ($_SESSION['CART'][$_SESSION['user_id']] as $item) {
+													$count += $item['qty'];
+												}
+											}
+
+											echo $count;
+											?>
+										</span>
+									</a>
+								</li>
 								<?php if (!isset($_SESSION['login'])): ?>
 								<li>
 									<a href="login.php">
