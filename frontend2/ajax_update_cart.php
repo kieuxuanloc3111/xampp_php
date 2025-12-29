@@ -1,5 +1,6 @@
 <?php
-session_start();
+include 'session_time.php';
+// include 'connect.php';
 
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['error' => 'not_login']);
@@ -48,6 +49,7 @@ foreach ($_SESSION['CART'][$userId] as $item) {
 
 echo json_encode([
     'success' => true,
-    'cart' => $_SESSION['CART'][$userId],
+    'cart' => array_values($_SESSION['CART'][$userId]),
+
     'totalQty' => $totalQty
 ]);
