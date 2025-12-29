@@ -541,7 +541,6 @@ $(document).ready(function(){
 
                 if (!res.success) return;
 
-                // nếu item bị xoá
                 if (!res.cart || !res.cart.find(i => i.id == productId)) {
                     row.remove();
                 } else {
@@ -552,7 +551,7 @@ $(document).ready(function(){
                     row.find('.cart_total_price').text(price * item.qty);
                 }
 
-                // update header cart
+                // update 
                 $('#cart-count').text(res.totalQty);
 
             }
