@@ -1048,7 +1048,6 @@ $(document).ready(function(){
                 product_id: productId
             },
 			success: function(res){
-				// res chính là tổng qty PHP trả về
 				$('#cart-count').text(res);
 			}
         });

@@ -41,7 +41,6 @@ foreach ($_SESSION['CART'][$userId] as $key => $item) {
     }
 }
 
-// TÍNH TỔNG QTY CHO HEADER
 $totalQty = 0;
 foreach ($_SESSION['CART'][$userId] as $item) {
     $totalQty += $item['qty'];
