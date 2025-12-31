@@ -6,5 +6,5 @@ use App\Http\Controllers\HomeController;
 
 Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/login', [HomeController::class, 'login']);
-Route::post('/login', [HomeController::class, 'handleLogin']);
+// Route::get('/login', [HomeController::class, 'login']);
+// Route::post('/login', [HomeController::class, 'handleLogin']);
