@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Home')
+<!-- @section('title', 'Home') -->
 @section('content')
 
 <section id="slider"><!--slider-->
