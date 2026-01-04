@@ -10,44 +10,35 @@ return new class extends Migration {
     {
         Schema::create('products', function (Blueprint $table) {
 
-            // ===== KHÓA CHÍNH =====
-            $table->id(); // bigint, auto increment, primary key
 
-            // ===== KIỂU CHUỖI =====
-            $table->string('name');               // varchar(255)
-            $table->string('slug')->unique();     // varchar + unique
-            $table->text('description')->nullable(); // text
+            $table->id(); // auto increment, primary key
 
-            // ===== KIỂU SỐ =====
-            $table->integer('quantity');          // int
-            $table->decimal('price', 10, 2);      // decimal(10,2)
-            $table->float('rating')->default(0); // float
+            $table->string('name');            
+            $table->string('slug')->unique();     
+            $table->text('description')->nullable(); 
 
-            // ===== KIỂU BOOLEAN =====
+            $table->integer('quantity');         
+            $table->decimal('price', 10, 2);      
+            $table->float('rating')->default(0); 
+
             $table->boolean('is_active')->default(true);
 
-            // ===== KIỂU DATE / TIME =====
             $table->date('publish_date')->nullable();
             $table->dateTime('expired_at')->nullable();
 
-            // ===== JSON =====
             $table->json('extra_info')->nullable();
 
-            // ===== ENUM (ít dùng, nhưng có) =====
             $table->enum('status', ['draft', 'published', 'archived'])
                   ->default('draft');
 
-            // ===== KHÓA NGOẠI (ví dụ) =====
             $table->foreignId('category_id')
                   ->nullable()
                   ->constrained('categories')
                   ->nullOnDelete();
 
-            // ===== TIMESTAMP =====
-            $table->timestamps(); // created_at, updated_at
+            $table->timestamps(); 
 
-            // ===== SOFT DELETE =====
-            $table->softDeletes(); // deleted_at
+            $table->softDeletes(); 
         });
     }
 

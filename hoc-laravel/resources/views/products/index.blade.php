@@ -24,6 +24,18 @@
             <td>
                 {{ $product->category ? $product->category->name : 'Chưa có' }}
             </td>
+            <td>
+                <a href="/products/{{ $product->id }}/edit">Sửa</a>
+
+                <form action="/products/{{ $product->id }}" method="POST" style="display:inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" onclick="return confirm('Xóa sản phẩm này?')">
+                        Xóa
+                    </button>
+                </form>
+            </td>
+
         </tr>
         @endforeach
     </table>
