@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Cauthu;
+class CauthuController extends Controller
+{
+    public function index()
+    {
+        $cauthu = Cauthu::orderBy('id', 'desc')->get();
+
+        return view('cauthu.index', compact('cauthu'));
+    }
+
+    public function create()
+    {
+        return view('cauthu.create');
+    }
+
+    public function store(Request $request)
+    {
+        Cauthu::create([
+            'name'   => $request->name,
+            'age'    => $request->age,
+            'salary' => $request->salary,
+        ]);
+
+        return redirect('/cauthu');
+    }
+
+    public function edit($id)
+    {
+        $cauthu = Cauthu::find($id);
+
+        return view('cauthu.edit', compact('cauthu'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $cauthu = Cauthu::find($id);
+
+        $cauthu->update([
+            'name'   => $request->name,
+            'age'    => $request->age,
+            'salary' => $request->salary,
+        ]);
+
+        return redirect('/cauthu');
+    }
+
+    public function destroy($id)
+    {
+        Cauthu::find($id)->delete();
+
+        return redirect('/cauthu');
+    }
+}
