@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\DB;
 
 class ProductSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         //
@@ -30,7 +27,7 @@ class ProductSeeder extends Seeder
                     'size' => ['M', 'L', 'XL']
                 ]),
                 'status' => 'published',
-                'category_id' => 1, // phải tồn tại category id = 1
+                'category_id' => 1, // phải tồn tại category 
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
