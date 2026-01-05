@@ -4,7 +4,9 @@
 <div class="container">
     <h2>Thêm cầu thủ</h2>
 
-    <form action="/cauthu/store" method="POST">
+    <form action="{{ url('/cauthu/store') }}"
+        method="POST"
+        enctype="multipart/form-data">
         @csrf
 
         <div>
@@ -28,8 +30,15 @@
 
         <br>
 
+        <div>
+            <label>Hình ảnh</label><br>
+            <input type="file" name="image">
+        </div>
+
+        <br>
+
         <button type="submit">Lưu</button>
-        <a href="/players">Quay lại</a>
     </form>
+
 </div>
 @endsection

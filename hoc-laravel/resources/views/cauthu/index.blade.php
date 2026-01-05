@@ -33,6 +33,15 @@
                     <button type="submit">Xóa</button>
                 </form> -->
             </td>
+            <td>
+                @if ($player->image)
+                    <img src="{{ asset('uploads/cauthu/'.$player->image) }}"
+                        width="80">
+                @else
+                    Chưa có hình
+                @endif
+            </td>
+
         </tr>
         @endforeach
     </table>

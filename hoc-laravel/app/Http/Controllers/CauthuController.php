@@ -21,14 +21,23 @@ class CauthuController extends Controller
 
     public function store(Request $request)
     {
+        $imageName = null;
+
+        if ($request->hasFile('image')) {
+            $imageName = time() . '_' . $request->image->getClientOriginalName();
+            $request->image->move(public_path('uploads/cauthu'), $imageName);
+        }
+
         Cauthu::create([
             'name'   => $request->name,
             'age'    => $request->age,
             'salary' => $request->salary,
+            'image'  => $imageName,
         ]);
 
         return redirect('/cauthu');
     }
+
 
     public function edit($id)
     {

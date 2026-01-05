@@ -16,8 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->integer('age');
             $table->decimal('salary', 12, 2);
+            $table->string('image')->nullable(); // 👈 thêm hình
             $table->timestamps();
         });
+
     }
 
     /**
