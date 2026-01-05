@@ -24,7 +24,7 @@ class Product extends Model
         'expired_at',
     ];
 
-    // quan hệ: product thuộc về category
+    //  product thuộc về category
     public function category()
     {
         return $this->belongsTo(Category::class);
