@@ -9,9 +9,9 @@ class Category extends Model
     //
     protected $fillable = ['name', 'slug'];
 
-    // quan hệ: category có nhiều product
-    public function products()
-    {
-        return $this->hasMany(Product::class);
-    }
+    // category có nhiều product
+    // public function products()
+    // {
+    //     return $this->hasMany(Product::class);
+    // }
 }
