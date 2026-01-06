@@ -4,6 +4,16 @@
 <div class="container">
     <h2>Thêm cầu thủ</h2>
 
+    @if ($errors->any())
+        <div style="color:red; margin-bottom:10px">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form action="{{ url('/cauthu/store') }}"
         method="POST"
         enctype="multipart/form-data">
@@ -11,21 +21,21 @@
 
         <div>
             <label>Tên cầu thủ</label><br>
-            <input type="text" name="name">
+            <input type="text" name="name" value="{{ old('name') }}">
         </div>
 
         <br>
 
         <div>
             <label>Tuổi</label><br>
-            <input type="number" name="age">
+            <input type="number" name="age" value="{{ old('age') }}">
         </div>
 
         <br>
 
         <div>
             <label>Lương</label><br>
-            <input type="number" name="salary">
+            <input type="number" name="salary" value="{{ old('salary') }}">
         </div>
 
         <br>
@@ -39,7 +49,5 @@
 
         <button type="submit">Lưu</button>
     </form>
-
-
 </div>
 @endsection

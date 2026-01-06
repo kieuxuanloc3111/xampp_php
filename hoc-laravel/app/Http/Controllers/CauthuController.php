@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCauthuRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Cauthu;
+use App\Http\Requests\UpdateCauthuRequest;
+
 class CauthuController extends Controller
 {
     public function index()
@@ -19,7 +22,7 @@ class CauthuController extends Controller
         return view('cauthu.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreCauthuRequest $request)
     {
         $imageName = null;
 
@@ -46,14 +49,14 @@ class CauthuController extends Controller
         return view('cauthu.edit', compact('cauthu'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateCauthuRequest $request, $id)
     {
         $cauthu = Cauthu::findOrFail($id);
 
         $imageName = $cauthu->image;
 
         if ($request->hasFile('image')) {
-            $imageName = time() . '_' . $request->image->getClientOriginalName();
+            $imageName = time().'_'.$request->image->getClientOriginalName();
             $request->image->move(public_path('uploads/cauthu'), $imageName);
         }
 
