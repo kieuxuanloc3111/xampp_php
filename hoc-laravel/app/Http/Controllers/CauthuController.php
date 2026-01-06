@@ -48,16 +48,25 @@ class CauthuController extends Controller
 
     public function update(Request $request, $id)
     {
-        $cauthu = Cauthu::find($id);
+        $cauthu = Cauthu::findOrFail($id);
+
+        $imageName = $cauthu->image;
+
+        if ($request->hasFile('image')) {
+            $imageName = time() . '_' . $request->image->getClientOriginalName();
+            $request->image->move(public_path('uploads/cauthu'), $imageName);
+        }
 
         $cauthu->update([
             'name'   => $request->name,
             'age'    => $request->age,
             'salary' => $request->salary,
+            'image'  => $imageName,
         ]);
 
         return redirect('/cauthu');
     }
+
 
     public function destroy($id)
     {
