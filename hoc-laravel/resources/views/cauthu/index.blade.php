@@ -11,7 +11,7 @@
             <th>ID</th>
             <th>Tên</th>
             <th>Tuổi</th>
-            <th>Lương</th>
+            <th>Lương</th>3123vccv
             <th>Hành động</th>
         </tr>
 

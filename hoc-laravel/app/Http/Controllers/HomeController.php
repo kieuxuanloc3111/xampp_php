@@ -6,28 +6,23 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    // Trang chủ
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function index()
     {
-        $name = 'Kiều Xuân Lộc';
-        $age=25;
-
-        return view('home', compact('name','age'));
-    }
-
-
-    // Hiển thị form login
-    public function login()
-    {
-        return view('login');
-    }
-
-    // Xử lý login
-    public function handleLogin(Request $request)
-    {
-        $username = $request->username;
-        $password = $request->password;
-
-        return "Username: $username - Password: $password";
+        return view('home');
     }
 }

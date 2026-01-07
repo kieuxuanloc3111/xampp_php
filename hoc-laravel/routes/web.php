@@ -31,3 +31,7 @@ Route::get('/cauthu/delete/{id}', [CauthuController::class, 'destroy']);
 
 // Route::get('/login', [HomeController::class, 'login']);
 // Route::post('/login', [HomeController::class, 'handleLogin']);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
