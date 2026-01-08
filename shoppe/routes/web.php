@@ -25,3 +25,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/profile', [UserController::class, 'update'])
         ->name('admin.profile.update');
 });
+use App\Http\Controllers\Admin\CountryController;
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/country', [CountryController::class, 'index'])->name('country.index');
+    Route::get('/country/create', [CountryController::class, 'create'])->name('country.create');
+    Route::post('/country', [CountryController::class, 'store'])->name('country.store');
+});

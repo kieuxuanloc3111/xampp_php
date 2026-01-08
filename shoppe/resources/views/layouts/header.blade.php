@@ -55,8 +55,18 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right user-dd animated">
                         <a class="dropdown-item" href="#"><i class="ti-user"></i> My Profile</a>
-                        <a class="dropdown-item" href="#"><i class="ti-wallet"></i> Logout</a>
-                        <a class="dropdown-item" href="#"><i class="ti-email"></i> Logout</a>
+                    <a class="dropdown-item"
+                    href="#"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="ti-power-off m-r-5 m-l-5"></i> Logout
+                    </a>
+
+                    <form id="logout-form"
+                        action="{{ route('logout') }}"
+                        method="POST"
+                        style="display: none;">
+                        @csrf
+                    </form>
                     </div>
                 </li>
             </ul>

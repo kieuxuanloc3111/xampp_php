@@ -11,9 +11,15 @@
                 </li>
 
                 <li class="sidebar-item">
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('admin.profile') }}">
                         <i class="mdi mdi-account-network"></i>
                         <span class="hide-menu">Profile</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
+                        <i class="mdi mdi-border-none"></i>
+                        <span class="hide-menu">Country</span>
                     </a>
                 </li>
 
