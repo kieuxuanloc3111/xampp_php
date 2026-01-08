@@ -133,12 +133,14 @@
                             <div class="col-md-12">
                                 <input
                                     type="email"
-                                    value="{{ $user->email }}"
+                                    name="email"
+                                    value="{{ old('email', $user->email) }}"
                                     class="form-control form-control-line"
-                                    readonly
+                                    required
                                 >
                             </div>
                         </div>
+
 
                         <div class="form-group">
                             <label class="col-md-12">New Password</label>
