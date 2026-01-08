@@ -3,12 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-
-use App\Models\User; // QUAN TRỌNG
 use App\Http\Requests\UpdateProfileRequest;
+use App\Models\Country;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -16,12 +13,15 @@ class UserController extends Controller
     public function profile()
     {
         $user = Auth::user();
-        $countries = DB::table('countries')->get();
+        $countries = Country::all();
 
         return view('admin.profile', compact('user', 'countries'));
     }
+
     public function update(UpdateProfileRequest $request)
     {
+        $user = Auth::user();
+
         $data = [
             'name'       => $request->name,
             'phone'      => $request->phone,
@@ -40,11 +40,8 @@ class UserController extends Controller
             $data['avatar'] = 'uploads/avatars/' . $fileName;
         }
 
-        DB::table('users')
-            ->where('id', Auth::id())
-            ->update($data);
+        $user->update($data);
 
         return redirect()->route('admin.profile');
     }
-
 }
