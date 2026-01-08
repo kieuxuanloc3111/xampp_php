@@ -27,6 +27,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Title</th>
+                                <th width="180">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -34,6 +35,18 @@
                                 <tr>
                                     <td>{{ $country->id }}</td>
                                     <td>{{ $country->name }}</td>
+                                    <td>
+                                        <a href="{{ route('admin.country.edit', $country->id) }}"
+                                        class="btn btn-warning btn-sm text-white">
+                                            Edit
+                                        </a>
+
+                                        <a href="javascript:void(0)"
+                                        onclick="deleteCountry({{ $country->id }})"
+                                        class="btn btn-danger btn-sm">
+                                            Delete
+                                        </a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -52,4 +65,22 @@
     </div>
 </div>
 
+
 @endsection
+
+<script>
+    function deleteCountry(id) {
+        if (!confirm('xóa???')) return;
+
+        fetch(`/admin/country/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            }
+        })
+        .then(() => {
+            window.location.reload();
+        });
+    }
+</script>

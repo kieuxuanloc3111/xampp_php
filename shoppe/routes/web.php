@@ -31,4 +31,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/country', [CountryController::class, 'index'])->name('country.index');
     Route::get('/country/create', [CountryController::class, 'create'])->name('country.create');
     Route::post('/country', [CountryController::class, 'store'])->name('country.store');
+
+    Route::get('/country/{id}/edit', [CountryController::class, 'edit'])->name('country.edit');
+    Route::put('/country/{id}', [CountryController::class, 'update'])->name('country.update');
+    Route::delete('/country/{id}', [CountryController::class, 'destroy'])->name('country.destroy');
 });
+
