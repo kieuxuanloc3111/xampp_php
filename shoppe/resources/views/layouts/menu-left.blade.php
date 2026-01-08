@@ -17,11 +17,13 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                    href="{{ route('admin.country.index') }}">
                         <i class="mdi mdi-border-none"></i>
                         <span class="hide-menu">Country</span>
                     </a>
                 </li>
+
 
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
