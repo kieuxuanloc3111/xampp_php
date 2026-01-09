@@ -15,7 +15,7 @@ class UserController extends Controller
         $user = Auth::user();
         $countries = Country::all();
 
-        return view('admin.profile', compact('user', 'countries'));
+        return view('admin.user.profile', compact('user', 'countries'));
     }
 
     public function update(UpdateProfileRequest $request)

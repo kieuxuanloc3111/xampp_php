@@ -9,12 +9,12 @@
             <div class="navbar-brand">
                 <a href="#" class="logo">
                     <b class="logo-icon">
-                        <img src="{{ asset('assets/images/logo-icon.png') }}" class="dark-logo"/>
-                        <img src="{{ asset('assets/images/logo-light-icon.png') }}" class="light-logo"/>
+                        <img src="{{ asset('admin/assets/images/logo-icon.png') }}" class="dark-logo"/>
+                        <img src="{{ asset('admin/assets/images/logo-light-icon.png') }}" class="light-logo"/>
                     </b>
                     <span class="logo-text">
-                        <img src="{{ asset('assets/images/logo-text.png') }}" class="dark-logo"/>
-                        <img src="{{ asset('assets/images/logo-light-text.png') }}" class="light-logo"/>
+                        <img src="{{ asset('admin/assets/images/logo-text.png') }}" class="dark-logo"/>
+                        <img src="{{ asset('admin/assets/images/logo-light-text.png') }}" class="light-logo"/>
                     </span>
                 </a>
             </div>
@@ -50,7 +50,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic"
                        data-toggle="dropdown">
-                        <img src="{{ asset('assets/images/users/1.jpg') }}"
+                        <img src="{{ asset('admin/assets/images/users/1.jpg') }}"
                              class="rounded-circle" width="31">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right user-dd animated">
