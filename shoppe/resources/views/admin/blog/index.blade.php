@@ -41,8 +41,20 @@
                                     <tr>
                                         <td>{{ $blog->id }}</td>
                                         <td>{{ $blog->title }}</td>
-                                        <td>{{ $blog->image }}</td>
-                                        <td>{{ $blog->description }}</td>
+                                        <td>
+                                            @if($blog->image)
+                                                <img
+                                                    src="{{ asset($blog->image) }}"
+                                                    alt="{{ $blog->title }}"
+                                                    width="80"
+                                                    style="object-fit: cover;"
+                                                >
+                                            @else
+                                                <span class="text-muted">No image</span>
+                                            @endif
+                                        </td>
+
+                                        <td>{!! $blog->description !!}</td>
                                         <td>
                                             <a href="{{ route('admin.blog.edit', $blog->id) }}"
                                                class="btn btn-sm btn-warning text-white">

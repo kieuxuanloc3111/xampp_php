@@ -40,14 +40,23 @@ use App\Http\Controllers\Admin\BlogController;
 
 Route::prefix('admin')->middleware('auth')->group(function () {
 
-    Route::get('/blogs', [BlogController::class, 'index'])->name('admin.blog.index');
-    Route::get('/blogs/create', [BlogController::class, 'create'])->name('admin.blog.create');
-    Route::post('/blogs', [BlogController::class, 'store'])->name('admin.blog.store');
-    Route::get('/blogs/{id}/edit', [BlogController::class, 'edit'])->name('admin.blog.edit');
-    Route::post('/blogs/{id}', [BlogController::class, 'update'])->name('admin.blog.update');
-    Route::get('/blogs/{id}/delete', [BlogController::class, 'destroy'])->name('admin.blog.delete');
+    Route::get('/blogs', [BlogController::class, 'index'])
+        ->name('admin.blog.index');
 
+    Route::get('/blogs/create', [BlogController::class, 'create'])
+        ->name('admin.blog.create');
+
+    Route::post('/blogs', [BlogController::class, 'store'])
+        ->name('admin.blog.store');
+
+    Route::get('/blogs/{id}/edit', [BlogController::class, 'edit'])
+        ->name('admin.blog.edit');
+
+    Route::put('/blogs/{id}', [BlogController::class, 'update'])
+        ->name('admin.blog.update');
+
+    Route::delete('/blogs/{id}', [BlogController::class, 'delete'])
+        ->name('admin.blog.delete');
 });
-
 
 
