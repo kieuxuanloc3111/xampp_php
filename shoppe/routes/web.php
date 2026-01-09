@@ -55,8 +55,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/blogs/{id}', [BlogController::class, 'update'])
         ->name('admin.blog.update');
 
-    Route::delete('/blogs/{id}', [BlogController::class, 'delete'])
+    Route::get('/blogs/{id}/delete', [BlogController::class, 'destroy'])
         ->name('admin.blog.delete');
+
 });
 
 
