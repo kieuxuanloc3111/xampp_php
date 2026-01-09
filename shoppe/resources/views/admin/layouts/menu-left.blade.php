@@ -23,6 +23,13 @@
                         <span class="hide-menu">Country</span>
                     </a>
                 </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                    href="{{ route('admin.blog.index') }}">
+                        <i class="mdi mdi-blogger"></i>
+                        <span class="hide-menu">Blog</span>
+                    </a>
+                </li>
 
 
                 <li class="sidebar-item">
