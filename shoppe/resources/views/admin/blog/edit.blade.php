@@ -24,7 +24,7 @@
                         @csrf
                         @method('PUT')
 
-                        {{-- TITLE --}}
+
                         <div class="form-group">
                             <label class="col-md-12">Title</label>
                             <div class="col-md-12">
@@ -38,7 +38,7 @@
                             </div>
                         </div>
 
-                        {{-- IMAGE --}}
+
                         <div class="form-group">
                             <label class="col-md-12">Image</label>
                             <div class="col-md-12">
@@ -72,7 +72,6 @@
 
 
 
-                        {{-- DESCRIPTION --}}
                         <div class="form-group">
                             <label class="col-md-12">Description</label>
                             <div class="col-md-12">
@@ -84,7 +83,6 @@
                             </div>
                         </div>
 
-                        {{-- BUTTON --}}
                         <div class="form-group">
                             <div class="col-sm-12">
                                 <button class="btn btn-success text-white">
@@ -108,7 +106,6 @@
 
 @endsection
 
-{{-- CKEDITOR --}}
 @push('scripts')
 <script src="/ckfinder/ckfinder.js"></script>
 <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>

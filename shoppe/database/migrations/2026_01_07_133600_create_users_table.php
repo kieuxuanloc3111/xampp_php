@@ -20,8 +20,10 @@ return new class extends Migration {
             $table->unsignedBigInteger('id_country')->nullable();
 
             $table->timestamps();
+
         });
     }
+
 
     public function down(): void
     {

@@ -60,4 +60,17 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
 });
 
+use App\Http\Controllers\Frontend\AuthController;
+
+Route::prefix('member')->group(function () {
+
+    Route::get('/register', [AuthController::class, 'registerForm'])
+        ->name('member.register');
+
+    Route::post('/register', [AuthController::class, 'register'])
+        ->name('member.register.post');
+
+});
+
+
 
