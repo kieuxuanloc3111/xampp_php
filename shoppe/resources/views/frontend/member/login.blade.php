@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'Register')
+@section('title', 'Login')
 
 @section('content')
 <section id="form">
@@ -8,8 +8,8 @@
         <div class="row">
 
             <div class="col-sm-4 col-sm-offset-4">
-                <div class="signup-form">
-                    <h2>Signup</h2>
+                <div class="login-form">
+                    <h2>Login</h2>
 
                     @if(session('success'))
                         <div class="alert alert-success">
@@ -17,17 +17,8 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('member.register.post') }}">
+                    <form method="POST" action="{{ route('member.login.post') }}">
                         @csrf
-
-                        <input type="text"
-                               name="name"
-                               placeholder="Name"
-                               value="{{ old('name') }}"/>
-
-                        @error('name')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
 
                         <input type="email"
                                name="email"
@@ -46,13 +37,14 @@
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
 
-                        <input type="password"
-                               name="password_confirmation"
-                               placeholder="Confirm Password"/>
-
                         <button type="submit" class="btn btn-default">
-                            Signup
+                            Login
                         </button>
+                        <span>
+                            <input type="checkbox" name="remember_me" class="checkbox">
+                            Keep me signed in
+                        </span>
+
                     </form>
 
                 </div>

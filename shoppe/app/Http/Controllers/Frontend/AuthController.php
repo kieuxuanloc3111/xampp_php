@@ -6,16 +6,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\MemberLoginRequest;
+
 
 class AuthController extends Controller
 {
-    // Hiển thị form register
     public function registerForm()
     {
         return view('frontend.member.register');
     }
 
-    // Xử lý register
     public function register(Request $request)
     {
         $request->validate([
@@ -29,12 +30,39 @@ class AuthController extends Controller
             'email'    => $request->email,
             'password' => Hash::make($request->password),
 
-            // QUAN TRỌNG
-            'level'    => 0, // MEMBER
+            'level'    => 0, 
         ]);
 
         return redirect()->route('member.login')
                         ->with('success', 'Register success! Please login.');
 
     }
+    public function loginForm()
+    {
+        return view('frontend.member.login');
+    }
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required|min:6',
+        ]);
+
+        $credentials = [
+            'email'    => $request->email,
+            'password' => $request->password,
+            'level'    => 0,
+        ];
+
+        if (Auth::attempt($credentials, $request->filled('remember_me'))) {
+            return redirect('/');
+        }
+
+        return back()->withErrors([
+            'email' => 'Email hoặc mật khẩu không đúng',
+        ]);
+    }
+
+
+
 }

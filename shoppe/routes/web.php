@@ -70,6 +70,12 @@ Route::prefix('member')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])
         ->name('member.register.post');
 
+    Route::get('/login', [AuthController::class, 'loginForm'])
+        ->name('member.login');
+
+    Route::post('/login', [AuthController::class, 'login'])
+        ->name('member.login.post');
+
 });
 
 
