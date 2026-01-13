@@ -1,4 +1,4 @@
-<div class="col-sm-3">
+<!-- <div class="col-sm-3"> -->
 	<div class="left-sidebar">
 		<h2>Category</h2>
 
@@ -144,4 +144,4 @@
 			<img src="{{ asset('frontend/images/home/shipping.jpg') }}" alt="">
 		</div>
 	</div>
-</div>
+<!-- </div> -->

@@ -36,29 +36,31 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::put('/country/{id}', [CountryController::class, 'update'])->name('country.update');
     Route::delete('/country/{id}', [CountryController::class, 'destroy'])->name('country.destroy');
 });
-use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\BlogController as AdminBlogController;
+use App\Http\Controllers\Frontend\BlogController as FrontendBlogController;
+
 
 Route::prefix('admin')->middleware('auth')->group(function () {
 
-    Route::get('/blogs', [BlogController::class, 'index'])
+    Route::get('/blogs', [AdminBlogController::class, 'index'])
         ->name('admin.blog.index');
 
-    Route::get('/blogs/create', [BlogController::class, 'create'])
+    Route::get('/blogs/create', [AdminBlogController::class, 'create'])
         ->name('admin.blog.create');
 
-    Route::post('/blogs', [BlogController::class, 'store'])
+    Route::post('/blogs', [AdminBlogController::class, 'store'])
         ->name('admin.blog.store');
 
-    Route::get('/blogs/{id}/edit', [BlogController::class, 'edit'])
+    Route::get('/blogs/{id}/edit', [AdminBlogController::class, 'edit'])
         ->name('admin.blog.edit');
 
-    Route::put('/blogs/{id}', [BlogController::class, 'update'])
+    Route::put('/blogs/{id}', [AdminBlogController::class, 'update'])
         ->name('admin.blog.update');
 
-    Route::get('/blogs/{id}/delete', [BlogController::class, 'destroy'])
+    Route::get('/blogs/{id}/delete', [AdminBlogController::class, 'destroy'])
         ->name('admin.blog.delete');
-
 });
+
 
 use App\Http\Controllers\Frontend\AuthController;
 
@@ -78,5 +80,10 @@ Route::prefix('member')->group(function () {
 
 });
 
+Route::get('/blog', [FrontendBlogController::class, 'index'])
+    ->name('member.blog.index');
 
-
+Route::get('/blog/{id}', [
+    FrontendBlogController::class,
+    'detail'
+])->name('member.blog.detail');

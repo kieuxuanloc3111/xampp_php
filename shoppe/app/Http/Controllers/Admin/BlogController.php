@@ -4,14 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\Blog;
 
 class BlogController extends Controller
 {
     public function index()
     {
-        $blogs = DB::table('blogs')->get();
-
+        $blogs = Blog::orderBy('id', 'desc')->get();
         return view('admin.blog.index', compact('blogs'));
     }
 
@@ -22,7 +21,7 @@ class BlogController extends Controller
 
     public function store(Request $request)
     {
-        DB::table('blogs')->insert([
+        Blog::create([
             'title'       => $request->title,
             'image'       => $request->image,
             'description' => $request->description,
@@ -33,28 +32,26 @@ class BlogController extends Controller
 
     public function edit($id)
     {
-        $blog = DB::table('blogs')->where('id', $id)->first();
-
+        $blog = Blog::findOrFail($id);
         return view('admin.blog.edit', compact('blog'));
     }
 
     public function update(Request $request, $id)
     {
-        DB::table('blogs')
-            ->where('id', $id)
-            ->update([
-                'title'       => $request->title,
-                'image'       => $request->image,
-                'description' => $request->description,
-            ]);
+        $blog = Blog::findOrFail($id);
+
+        $blog->update([
+            'title'       => $request->title,
+            'image'       => $request->image,
+            'description' => $request->description,
+        ]);
 
         return redirect()->route('admin.blog.index');
     }
 
     public function destroy($id)
     {
-        DB::table('blogs')->where('id', $id)->delete();
-
+        Blog::destroy($id);
         return redirect()->route('admin.blog.index');
     }
 }
