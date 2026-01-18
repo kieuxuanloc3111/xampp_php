@@ -20,35 +20,24 @@
                     <div class="single-blog-post">
                         <h3>{{ $blog->title }}</h3>
 
-                    <div class="post-meta">
-                        <ul>
-                            <li>
-                                <i class="fa fa-user"></i>
-                                Admin
-                            </li>
-
-                            {{-- TIME --}}
-                            <li>
-                                <i class="fa fa-clock-o"></i>
-                                {{ optional($blog->created_at)->format('h:i a') }}
-                            </li>
-
-                            {{-- DATE --}}
-                            <li>
-                                <i class="fa fa-calendar"></i>
-                                {{ optional($blog->created_at)->format('M d, Y') }}
-                            </li>
-                        </ul>
-                    </div>
-
+                        <div class="post-meta">
+                            <ul>
+                                <li><i class="fa fa-user"></i> Admin</li>
+                                <li>
+                                    <i class="fa fa-clock-o"></i>
+                                    {{ optional($blog->created_at)->format('h:i a') }}
+                                </li>
+                                <li>
+                                    <i class="fa fa-calendar"></i>
+                                    {{ optional($blog->created_at)->format('M d, Y') }}
+                                </li>
+                            </ul>
+                        </div>
 
                         @if($blog->image)
-                            <img
-                                src="{{ asset($blog->image) }}"
-                                alt=""
-                                class="img-responsive"
-                                style="max-width:100%; height:auto;"
-                            >
+                            <img src="{{ asset($blog->image) }}"
+                                 class="img-responsive"
+                                 style="max-width:100%;height:auto;">
                         @endif
 
                         {!! $blog->description !!}
@@ -56,97 +45,174 @@
                         {{-- PREV / NEXT --}}
                         <div class="pager-area">
                             <ul class="pager pull-right">
-
                                 @if($prevBlog)
                                     <li>
-                                        <a href="{{ route('member.blog.detail', $prevBlog->id) }}">
-                                            Pre
-                                        </a>
+                                        <a href="{{ route('member.blog.detail', $prevBlog->id) }}">Pre</a>
                                     </li>
                                 @endif
-
                                 @if($nextBlog)
                                     <li>
-                                        <a href="{{ route('member.blog.detail', $nextBlog->id) }}">
-                                            Next
-                                        </a>
+                                        <a href="{{ route('member.blog.detail', $nextBlog->id) }}">Next</a>
                                     </li>
                                 @endif
-
                             </ul>
                         </div>
                     </div>
-                </div><!--/blog-post-area-->
+                </div>
 
-                {{-- RATING (GIỮ NGUYÊN) --}}
+                {{-- ⭐ RATING --}}
                 <div class="rating-area">
-                    <ul class="ratings">
-                        <li class="rate-this">Rate this item:</li>
-                        <li>
-                            <i class="fa fa-star color"></i>
-                            <i class="fa fa-star color"></i>
-                            <i class="fa fa-star color"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </li>
-                        <li class="color">(6 votes)</li>
-                    </ul>
-                    <ul class="tag">
-                        <li>TAG:</li>
-                        <li><a class="color" href="">Pink <span>/</span></a></li>
-                        <li><a class="color" href="">T-Shirt <span>/</span></a></li>
-                        <li><a class="color" href="">Girls</a></li>
-                    </ul>
-                </div><!--/rating-area-->
+                    <div class="rate" data-blog="{{ $blog->id }}">
+                        <div class="vote">
+                            @for($i = 1; $i <= 5; $i++)
+                                <span
+                                    class="ratings_stars {{ $i <= round($avgRate ?? 0) ? 'active' : '' }}"
+                                    data-value="{{ $i }}">
+                                    ★
+                                </span>
+                            @endfor
+                            <span class="rate-np">
+                                {{ round($avgRate ?? 0, 1) }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
 
                 {{-- SOCIAL SHARE --}}
                 <div class="socials-share">
-                    <a href="">
-                        <img src="{{ asset('frontend/images/blog/socials.png') }}" alt="">
-                    </a>
-                </div><!--/socials-share-->
-
-                {{-- COMMENTS (GIỮ NGUYÊN) --}}
+                    <img src="{{ asset('frontend/images/blog/socials.png') }}" alt="">
+                </div>
+                {{-- COMMENTS --}}
                 <div class="response-area">
-                    <h2>3 RESPONSES</h2>
-                    <ul class="media-list">
-                        <li class="media">
-                            <a class="pull-left" href="#">
-                                <img class="media-object" src="{{ asset('frontend/images/blog/man-two.jpg') }}" alt="">
-                            </a>
-                            <div class="media-body">
-                                <ul class="sinlge-post-meta">
-                                    <li><i class="fa fa-user"></i>Janis Gallagher</li>
-                                    <li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-                                    <li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
-                                </ul>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a class="btn btn-primary" href="">
-                                    <i class="fa fa-reply"></i>Replay
-                                </a>
-                            </div>
-                        </li>
+                    <h2>{{ $comments->count() }} RESPONSES</h2>
+                    <ul class="media-list" id="comment-list">
+                        @foreach($comments as $comment)
+                            @include('frontend.blog._single_comment', ['comment' => $comment])
+                        @endforeach
                     </ul>
-                </div><!--/Response-area-->
+                </div>
 
+                {{-- FORM COMMENT --}}
                 <div class="replay-box">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h2>Leave a replay</h2>
-                            <div class="text-area">
-                                <div class="blank-arrow">
-                                    <label>Your Name</label>
-                                </div>
-                                <span>*</span>
-                                <textarea name="message" rows="11"></textarea>
-                                <a class="btn btn-primary" href="">post comment</a>
-                            </div>
-                        </div>
-                    </div>
-                </div><!--/Replay Box-->
-
+                    <h2>Leave a comment</h2>
+                    <textarea id="comment-content" class="form-control" rows="5"></textarea>
+                    <br>
+                    <button class="btn btn-primary" id="btn-comment">
+                        Post comment
+                    </button>
+                </div>
+                
             </div>
         </div>
     </div>
 </section>
 @endsection
+
+@section('scripts')
+<script>
+$(document).ready(function () {
+
+    console.log('JS LOADED');
+
+    let isLogin = {{ auth()->check() ? 'true' : 'false' }};
+    let blogId  = {{ $blog->id }};
+
+    /* =======================
+        RATE
+    ======================= */
+    $('.ratings_stars').on('click', function () {
+
+        let rate = $(this).data('value');
+
+        $.ajax({
+            url: "{{ route('blog.rate') }}",
+            type: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                blog_id: blogId,
+                rate: rate
+            },
+            success: function (res) {
+
+                if (res.status === 'not_login') {
+                    alert('Vui lòng đăng nhập để đánh giá');
+                    return;
+                }
+
+                $('.rate-np').text(res.avg);
+
+                $('.ratings_stars').removeClass('active');
+                $('.ratings_stars').each(function () {
+                    if ($(this).data('value') <= rate) {
+                        $(this).addClass('active');
+                    }
+                });
+            }
+        });
+    });
+
+    /* =======================
+        COMMENT CHA
+    ======================= */
+    $('#btn-comment').click(function () {
+
+        if (!isLogin) {
+            alert('Vui lòng login để comment');
+            return;
+        }
+
+        let content = $('#comment-content').val().trim();
+        if (!content) return;
+
+        $.post("{{ route('blog.comment') }}", {
+            _token: "{{ csrf_token() }}",
+            blog_id: blogId,
+            content: content
+        }, function (res) {
+
+            if (res.status === 'success') {
+                $('#comment-list').prepend(res.html);
+                $('#comment-content').val('');
+            }
+        });
+    });
+
+    /* =======================
+        HIỆN FORM REPLY
+    ======================= */
+    $(document).on('click', '.btn-reply', function () {
+        $('#reply-form-' + $(this).data('id')).toggle();
+    });
+
+    /* =======================
+        COMMENT CON (REPLY)
+    ======================= */
+    $(document).on('click', '.btn-send-reply', function () {
+
+        if (!isLogin) {
+            alert('Vui lòng login để reply');
+            return;
+        }
+
+        let parentId = $(this).data('parent');
+        let content  = $(this).prev('.reply-content').val().trim();
+        let box      = $(this).closest('.media-body');
+
+        if (!content) return;
+
+        $.post("{{ route('blog.comment') }}", {
+            _token: "{{ csrf_token() }}",
+            blog_id: blogId,
+            parent_id: parentId,
+            content: content
+        }, function (res) {
+            if (res.status === 'success') {
+                box.append(res.html);
+            }
+        });
+    });
+
+});
+</script>
+@endsection
+

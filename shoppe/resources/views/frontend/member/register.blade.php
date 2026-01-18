@@ -17,7 +17,9 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('member.register.post') }}">
+                    <form method="POST"
+                          action="{{ route('member.register.post') }}"
+                          enctype="multipart/form-data">
                         @csrf
 
                         <input type="text"
@@ -49,6 +51,15 @@
                         <input type="password"
                                name="password_confirmation"
                                placeholder="Confirm Password"/>
+
+                        {{-- AVATAR --}}
+                        <input type="file"
+                               name="avatar"
+                               accept="image/*"/>
+
+                        @error('avatar')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
 
                         <button type="submit" class="btn btn-default">
                             Signup

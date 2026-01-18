@@ -13,6 +13,8 @@
 	<link href="{{ asset('frontend/css/animate.css') }}" rel="stylesheet">
 	<link href="{{ asset('frontend/css/main.css') }}" rel="stylesheet">
 	<link href="{{ asset('frontend/css/responsive.css') }}" rel="stylesheet">
+	<link rel="stylesheet" href="{{ asset('frontend/css/rate.css') }}">
+
 </head>
 
 <body>
@@ -31,6 +33,6 @@
 <script src="{{ asset('frontend/js/price-range.js') }}"></script>
 <script src="{{ asset('frontend/js/jquery.prettyPhoto.js') }}"></script>
 <script src="{{ asset('frontend/js/main.js') }}"></script>
-
+@yield('scripts')
 </body>
 </html>

@@ -87,3 +87,12 @@ Route::get('/blog/{id}', [
     FrontendBlogController::class,
     'detail'
 ])->name('member.blog.detail');
+
+Route::post('/blog/rate', [
+    FrontendBlogController::class,
+    'rate'
+])->name('blog.rate');
+use App\Http\Controllers\Frontend\CommentController;
+
+Route::post('/blog/comment', [CommentController::class, 'store'])
+    ->name('blog.comment');

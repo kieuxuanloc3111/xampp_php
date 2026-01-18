@@ -14,6 +14,7 @@ class User extends Authenticatable
         'address',
         'avatar',
         'id_country',
+        'level',
     ];
 
     protected $hidden = [

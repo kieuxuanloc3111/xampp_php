@@ -23,20 +23,31 @@ class AuthController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
+            'avatar'   => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        $avatarPath = null;
+
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            $fileName = time().'_'.$file->getClientOriginalName();
+            $file->move(public_path('uploads/avatars'), $fileName);
+
+            $avatarPath = 'uploads/avatars/' . $fileName;
+        }
 
         User::create([
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
-
-            'level'    => 0, 
+            'avatar'   => $avatarPath,
+            'level'    => 0,
         ]);
 
         return redirect()->route('member.login')
                         ->with('success', 'Register success! Please login.');
-
     }
+
     public function loginForm()
     {
         return view('frontend.member.login');
