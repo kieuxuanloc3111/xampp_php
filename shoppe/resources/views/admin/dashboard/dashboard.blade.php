@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('title', 'Dashboard')
 
@@ -341,7 +341,7 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/libs/chartist/dist/chartist.min.js') }}"></script>
-<script src="{{ asset('assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script>
-<script src="{{ asset('dist/js/pages/dashboards/dashboard1.js') }}"></script>
+<script src="{{ asset('admin/assets/libs/chartist/dist/chartist.min.js') }}"></script>
+<script src="{{ asset('admin/assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script>
+<script src="{{ asset('admin/dist/js/pages/dashboards/dashboard1.js') }}"></script>
 @endpush
