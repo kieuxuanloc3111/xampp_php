@@ -14,17 +14,20 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 
-Route::middleware('auth')->group(function () {
+Route::prefix('panel')
+    ->middleware(['auth'])
+    ->group(function () {
 
-    Route::get('/admin', [DashboardController::class, 'index'])
-        ->name('admin.dashboard');
+        Route::get('/', [DashboardController::class, 'index'])
+            ->name('admin.dashboard');
 
-    Route::get('/admin/profile', [UserController::class, 'profile'])
-        ->name('admin.profile');
+        Route::get('/profile', [UserController::class, 'profile'])
+            ->name('admin.profile');
 
-    Route::post('/admin/profile', [UserController::class, 'update'])
-        ->name('admin.profile.update');
+        Route::post('/profile', [UserController::class, 'update'])
+            ->name('admin.profile.update');
 });
+
 use App\Http\Controllers\Admin\CountryController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -77,7 +80,8 @@ Route::prefix('member')->group(function () {
 
     Route::post('/login', [AuthController::class, 'login'])
         ->name('member.login.post');
-
+    Route::post('/logout', [AuthController::class, 'logout'])
+        ->name('member.logout');
 });
 
 Route::get('/blog', [FrontendBlogController::class, 'index'])

@@ -66,12 +66,22 @@ class AuthController extends Controller
         ];
 
         if (Auth::attempt($credentials, $request->filled('remember_me'))) {
-            return redirect('/');
+            return redirect('/blog/');
         }
 
         return back()->withErrors([
             'email' => 'Email hoặc mật khẩu không đúng',
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/member/login');
     }
 
 

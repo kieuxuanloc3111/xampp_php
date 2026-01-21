@@ -64,7 +64,30 @@
 							<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
 							<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
 							<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-							<li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
+							@guest
+								<li>
+									<a href="{{ route('member.login') }}">
+										<i class="fa fa-lock"></i> Login
+									</a>
+								</li>
+							@endguest
+
+							@auth
+								<li>
+									<a href="{{ route('member.logout') }}"
+									onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+										<i class="fa fa-sign-out"></i> Logout
+									</a>
+
+									<form id="logout-form"
+										action="{{ route('member.logout') }}"
+										method="POST"
+										style="display: none;">
+										@csrf
+									</form>
+								</li>
+							@endauth
+
 						</ul>
 					</div>
 				</div>
