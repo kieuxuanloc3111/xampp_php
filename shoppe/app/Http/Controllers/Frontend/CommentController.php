@@ -32,7 +32,7 @@ class CommentController extends Controller
             'level'       => $request->parent_id ? 1 : 0,
             'content'     => $request->content,
             'user_name'   => $user->name,
-            'user_avatar' => $user->avatar ?? 'frontend/images/default-avatar.png',
+            'user_avatar' => $user->avatar ,
         ]);
 
         return response()->json([

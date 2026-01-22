@@ -7,12 +7,11 @@
     <div class="container">
         <div class="row">
 
-            {{-- LEFT SIDEBAR --}}
             <div class="col-sm-3">
                 @include('frontend.layouts.menuleft')
             </div>
 
-            {{-- BLOG DETAIL --}}
+            <!-- detail -->
             <div class="col-sm-9">
                 <div class="blog-post-area">
                     <h2 class="title text-center">Blog Detail</h2>
@@ -42,7 +41,7 @@
 
                         {!! $blog->description !!}
 
-                        {{-- PREV / NEXT --}}
+                            <!-- prev next  -->
                         <div class="pager-area">
                             <ul class="pager pull-right">
                                 @if($prevBlog)
@@ -60,7 +59,7 @@
                     </div>
                 </div>
 
-                {{-- ⭐ RATING --}}
+                <!-- rating  -->
                 <div class="rating-area">
                     <div class="rate" data-blog="{{ $blog->id }}">
                         <div class="vote">
@@ -78,11 +77,11 @@
                     </div>
                 </div>
 
-                {{-- SOCIAL SHARE --}}
                 <div class="socials-share">
                     <img src="{{ asset('frontend/images/blog/socials.png') }}" alt="">
                 </div>
-                {{-- COMMENTS --}}
+
+                <!-- comment -->
                 <div class="response-area">
                     <h2>{{ $comments->count() }} RESPONSES</h2>
                     <ul class="media-list" id="comment-list">
@@ -92,7 +91,7 @@
                     </ul>
                 </div>
 
-                {{-- FORM COMMENT --}}
+    
                 <div class="replay-box">
                     <h2>Leave a comment</h2>
                     <textarea id="comment-content" class="form-control" rows="5"></textarea>

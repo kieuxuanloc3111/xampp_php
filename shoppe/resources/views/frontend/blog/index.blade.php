@@ -7,12 +7,11 @@
     <div class="container">
         <div class="row">
 
-            {{-- LEFT SIDEBAR --}}
             <div class="col-sm-3">
                 @include('frontend.layouts.menuleft')
             </div>
-
-            {{-- BLOG LIST --}}
+            
+<!-- blog list -->
             <div class="col-sm-9">
                 <div class="blog-post-area">
                     <h2 class="title text-center">Latest From our Blog</h2>

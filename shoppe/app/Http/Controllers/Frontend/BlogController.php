@@ -40,7 +40,7 @@ class BlogController extends Controller
 
     }
 
-    // ⭐ RATE AJAX
+    // rate ajax
     public function rate(Request $request)
     {
         if (!Auth::check()) {
