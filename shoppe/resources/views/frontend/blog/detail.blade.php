@@ -116,9 +116,7 @@ $(document).ready(function () {
     let isLogin = {{ auth()->check() ? 'true' : 'false' }};
     let blogId  = {{ $blog->id }};
 
-    /* =======================
-        RATE
-    ======================= */
+    // rate
     $('.ratings_stars').on('click', function () {
 
         let rate = $(this).data('value');
@@ -150,9 +148,7 @@ $(document).ready(function () {
         });
     });
 
-    /* =======================
-        COMMENT CHA
-    ======================= */
+    // comment
     $('#btn-comment').click(function () {
 
         if (!isLogin) {
@@ -176,16 +172,13 @@ $(document).ready(function () {
         });
     });
 
-    /* =======================
-        HIỆN FORM REPLY
-    ======================= */
+
+    // reply
     $(document).on('click', '.btn-reply', function () {
         $('#reply-form-' + $(this).data('id')).toggle();
     });
 
-    /* =======================
-        COMMENT CON (REPLY)
-    ======================= */
+    // comment con
     $(document).on('click', '.btn-send-reply', function () {
 
         if (!isLogin) {
@@ -214,4 +207,3 @@ $(document).ready(function () {
 });
 </script>
 @endsection
-

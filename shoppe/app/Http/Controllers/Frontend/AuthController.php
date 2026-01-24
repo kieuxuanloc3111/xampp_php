@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\MemberLoginRequest;
-
+use App\Models\Country;
 
 class AuthController extends Controller
 {
@@ -83,7 +83,40 @@ class AuthController extends Controller
 
         return redirect('/member/login');
     }
+    public function profileForm()
+    {
+        $user = Auth::user();
+        $countries = Country::all();
 
+        return view('frontend.member.profile', compact('user', 'countries'));
+    }
+    public function updateProfile(Request $request){
+        $user = Auth::user();
 
+        $request->validate([
+            'name'     => 'required|string|max:255',
+            'password' => 'nullable|min:6|confirmed',
+            'phone'    => 'nullable|string|max:255',
+            'address'  => 'nullable|string|max:255',
+            'avatar'   => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'id_country' => 'nullable|exists:countries,id',
+        ]);
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            $fileName = time().'_'.$file->getClientOriginalName();
+            $file->move(public_path('uploads/avatars'), $fileName);
+
+            $user->avatar = 'uploads/avatars/'.$fileName;
+        }
+
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
+        $user->id_country = $request->id_country;
+
+        $user->save();
+
+        return back()->with('success', 'Cap nhat thanh cong');
+        }
 
 }

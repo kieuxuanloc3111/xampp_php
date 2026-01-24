@@ -82,6 +82,21 @@ Route::prefix('member')->group(function () {
         ->name('member.login.post');
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('member.logout');
+
+    Route::get('/profile', [AuthController::class, 'profileForm'])
+        ->name('member.profile');
+
+    Route::post('/profile', [AuthController::class, 'updateProfile'])
+        ->name('member.profile.update');
+
+    Route::get('/my-product', function () {
+        //
+    })->name('member.my_product');
+
+    Route::get('/add-product', function () {
+        //
+    })->name('member.add_product');
+
 });
 
 Route::get('/blog', [FrontendBlogController::class, 'index'])
