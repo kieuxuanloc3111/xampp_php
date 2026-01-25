@@ -41,7 +41,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\Frontend\BlogController as FrontendBlogController;
-
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\BrandController;
 
 Route::prefix('admin')->middleware('auth')->group(function () {
 
@@ -62,7 +63,49 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     Route::get('/blogs/{id}/delete', [AdminBlogController::class, 'destroy'])
         ->name('admin.blog.delete');
-});
+    // CATEGORY
+
+// CATEGORY
+    Route::get('/category', [CategoryController::class, 'index'])
+        ->name('admin.category.index');
+
+    Route::get('/category/create', [CategoryController::class, 'create'])
+        ->name('admin.category.create');
+
+    Route::post('/category', [CategoryController::class, 'store'])
+        ->name('admin.category.store');
+
+    Route::get('/category/{id}/edit', [CategoryController::class, 'edit'])
+        ->name('admin.category.edit');
+
+    Route::put('/category/{id}', [CategoryController::class, 'update'])
+        ->name('admin.category.update');
+
+    Route::get('/category/{id}/delete', [CategoryController::class, 'destroy'])
+        ->name('admin.category.delete');
+
+
+    // BRAND
+// BRAND
+    Route::get('/brand', [BrandController::class, 'index'])
+        ->name('admin.brand.index');
+
+    Route::get('/brand/create', [BrandController::class, 'create'])
+        ->name('admin.brand.create');
+
+    Route::post('/brand', [BrandController::class, 'store'])
+        ->name('admin.brand.store');
+
+    Route::get('/brand/{id}/edit', [BrandController::class, 'edit'])
+        ->name('admin.brand.edit');
+
+    Route::put('/brand/{id}', [BrandController::class, 'update'])
+        ->name('admin.brand.update');
+
+    Route::get('/brand/{id}/delete', [BrandController::class, 'destroy'])
+        ->name('admin.brand.delete');
+    
+    });
 
 
 use App\Http\Controllers\Frontend\AuthController;

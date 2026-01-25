@@ -23,6 +23,21 @@
                         <span class="hide-menu">Country</span>
                     </a>
                 </li>
+
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('admin.category.index') }}">
+                        <i class="mdi mdi-view-list"></i>
+                        <span class="hide-menu">Category</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('admin.brand.index') }}">
+                        <i class="mdi mdi-tag"></i>
+                        <span class="hide-menu">Brand</span>
+                    </a>
+                </li>
+
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link"
                     href="{{ route('admin.blog.index') }}">

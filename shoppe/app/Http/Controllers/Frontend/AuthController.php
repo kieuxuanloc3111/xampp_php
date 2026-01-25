@@ -7,8 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\MemberLoginRequest;
+
 use App\Models\Country;
+use App\Http\Requests\Member\RegisterRequest;
+use App\Http\Requests\Member\LoginRequest;
+use App\Http\Requests\Member\UpdateProfileRequest;
 
 class AuthController extends Controller
 {
@@ -17,15 +20,8 @@ class AuthController extends Controller
         return view('frontend.member.register');
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email',
-            'password' => 'required|min:6|confirmed',
-            'avatar'   => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
-
         $avatarPath = null;
 
         if ($request->hasFile('avatar')) {
@@ -45,20 +41,16 @@ class AuthController extends Controller
         ]);
 
         return redirect()->route('member.login')
-                        ->with('success', 'Register success! Please login.');
+            ->with('success', 'Register success! Please login.');
     }
+
 
     public function loginForm()
     {
         return view('frontend.member.login');
     }
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required|min:6',
-        ]);
-
         $credentials = [
             'email'    => $request->email,
             'password' => $request->password,
@@ -73,6 +65,7 @@ class AuthController extends Controller
             'email' => 'Email hoặc mật khẩu không đúng',
         ]);
     }
+
 
     public function logout(Request $request)
     {
@@ -90,17 +83,10 @@ class AuthController extends Controller
 
         return view('frontend.member.profile', compact('user', 'countries'));
     }
-    public function updateProfile(Request $request){
+    public function updateProfile(UpdateProfileRequest $request)
+    {
         $user = Auth::user();
 
-        $request->validate([
-            'name'     => 'required|string|max:255',
-            'password' => 'nullable|min:6|confirmed',
-            'phone'    => 'nullable|string|max:255',
-            'address'  => 'nullable|string|max:255',
-            'avatar'   => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'id_country' => 'nullable|exists:countries,id',
-        ]);
         if ($request->hasFile('avatar')) {
             $file = $request->file('avatar');
             $fileName = time().'_'.$file->getClientOriginalName();
@@ -114,9 +100,14 @@ class AuthController extends Controller
         $user->address = $request->address;
         $user->id_country = $request->id_country;
 
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
         $user->save();
 
-        return back()->with('success', 'Cap nhat thanh cong');
-        }
+        return back()->with('success', 'Cập nhật thành công');
+    }
+
 
 }

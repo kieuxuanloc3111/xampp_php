@@ -110,7 +110,7 @@
                             <br>
 
                             <img id="avatar-preview"
-                                src="{{ $user->avatar ? asset($user->avatar) : asset('frontend/images/default-avatar.png') }}"
+                                src="{{ $user->avatar ? asset($user->avatar) }}"
                                 width="80"
                                 style="margin-bottom:10px; display:block;">
 
