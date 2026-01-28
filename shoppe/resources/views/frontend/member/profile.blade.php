@@ -29,7 +29,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a href="{{ route('member.my_product') }}">
+                                    <a href="{{ route('member.product.my') }}">
                                         My product
                                     </a>
                                 </h4>
@@ -40,7 +40,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a href="{{ route('member.add_product') }}">
+                                    <a href="{{ route('member.product.add') }}">
                                         Add product
                                     </a>
                                 </h4>
@@ -110,7 +110,7 @@
                             <br>
 
                             <img id="avatar-preview"
-                                src="{{ $user->avatar ? asset($user->avatar) }}"
+                                src="{{ $user->avatar ? asset($user->avatar) : '' }}"
                                 width="80"
                                 style="margin-bottom:10px; display:block;">
 

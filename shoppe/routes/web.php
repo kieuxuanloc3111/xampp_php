@@ -7,7 +7,7 @@ Route::get('/', function () {
 });
 
 
-Auth::routes();
+// Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -109,7 +109,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
 
 use App\Http\Controllers\Frontend\AuthController;
-
+use App\Http\Controllers\Frontend\ProductController;
 Route::prefix('member')->group(function () {
 
     Route::get('/register', [AuthController::class, 'registerForm'])
@@ -123,6 +123,11 @@ Route::prefix('member')->group(function () {
 
     Route::post('/login', [AuthController::class, 'login'])
         ->name('member.login.post');
+
+});
+
+Route::middleware('auth')->prefix('member')->group(function () {
+
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('member.logout');
 
@@ -132,14 +137,15 @@ Route::prefix('member')->group(function () {
     Route::post('/profile', [AuthController::class, 'updateProfile'])
         ->name('member.profile.update');
 
-    Route::get('/my-product', function () {
-        //
-    })->name('member.my_product');
+    // PRODUCT
+    Route::get('/add-product', [ProductController::class, 'create'])
+        ->name('member.product.add');
 
-    Route::get('/add-product', function () {
-        //
-    })->name('member.add_product');
+    Route::post('/add-product', [ProductController::class, 'store'])
+        ->name('member.product.store');
 
+    Route::get('/my-product', [ProductController::class, 'myProduct'])
+        ->name('member.product.my');
 });
 
 Route::get('/blog', [FrontendBlogController::class, 'index'])

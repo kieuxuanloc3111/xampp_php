@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Products extends Model
+{
+    protected $table = 'products';
+
+    protected $fillable = [
+        'name',
+        'price',
+        'sale',
+        'sale_price',
+        'company',
+        'detail',
+        'status',      // 👈 thêm
+        'category_id',
+        'brand_id',
+        'image',
+        'user_id',
+    ];
+
+
+    protected $casts = [
+        'image' => 'array', // tự động json_decode
+    ];
+
+    public $timestamps = true;
+
+    /* ======================
+        RELATIONSHIP
+    ====================== */
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}
