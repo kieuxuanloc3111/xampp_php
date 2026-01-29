@@ -6,7 +6,7 @@
 <div class="container">
     <div class="row">
 
-        {{-- LEFT --}}
+
         <div class="col-sm-3">
             <div class="left-sidebar">
                 <h2>Account</h2>
@@ -29,7 +29,7 @@
             </div>
         </div>
 
-        {{-- RIGHT --}}
+
         <div class="col-sm-9">
 
             @if($products->count() == 0)
@@ -49,7 +49,6 @@
 
                         @foreach($products as $product)
                             @php
-                                // image trong DB là json
                                 $images = json_decode($product->image, true);
                                 $thumb = $images[0] ?? null;
                             @endphp
@@ -71,7 +70,7 @@
                                 </td>
 
                                 <td class="cart_total">
-                                    <a href="#">edit</a> |
+                                    <a href="{{ route('member.product.edit', $product->id) }}">edit</a> |
                                     <a href="#"
                                        onclick="return confirm('Delete product?')">
                                        delete

@@ -7,7 +7,7 @@ Route::get('/', function () {
 });
 
 
-// Auth::routes();
+Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -146,6 +146,12 @@ Route::middleware('auth')->prefix('member')->group(function () {
 
     Route::get('/my-product', [ProductController::class, 'myProduct'])
         ->name('member.product.my');
+        
+    Route::get('/product/{id}/edit', [ProductController::class, 'edit'])
+        ->name('member.product.edit');
+
+    Route::post('/product/{id}/update', [ProductController::class, 'update'])
+        ->name('member.product.update');        
 });
 
 Route::get('/blog', [FrontendBlogController::class, 'index'])

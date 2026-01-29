@@ -7,7 +7,6 @@
     <div class="container">
         <div class="row">
 
-            {{-- LEFT --}}
             <div class="col-sm-3">
                 <div class="left-sidebar">
                     <h2>Account</h2>
@@ -30,7 +29,7 @@
                 </div>
             </div>
 
-            {{-- RIGHT --}}
+
             <div class="col-sm-9">
                 <div class="signup-form">
                     <h2>Add Product</h2>
@@ -46,13 +45,10 @@
                           enctype="multipart/form-data">
                         @csrf
 
-                        {{-- NAME --}}
                         <input type="text" name="name" placeholder="Product name" required>
 
-                        {{-- PRICE --}}
                         <input type="number" name="price" placeholder="Price" required>
 
-                        {{-- CATEGORY --}}
                         <select name="category_id" required>
                             <option value="">-- Category --</option>
                             @foreach($categories as $cat)
@@ -60,7 +56,7 @@
                             @endforeach
                         </select>
 
-                        {{-- BRAND --}}
+
                         <select name="brand_id" required>
                             <option value="">-- Brand --</option>
                             @foreach($brands as $brand)
@@ -68,26 +64,26 @@
                             @endforeach
                         </select>
 
-                        {{-- SALE --}}
+ 
                         <select name="sale" id="sale-select">
                             <option value="0">New</option>
                             <option value="1">Sale</option>
                         </select>
 
-                        {{-- SALE PRICE --}}
+  
                         <input type="number"
                                name="sale_price"
                                id="sale-price"
                                placeholder="Sale price"
                                style="display:none;">
 
-                        {{-- COMPANY --}}
+   
                         <input type="text" name="company" placeholder="Company profile" required>
 
-                        {{-- DETAIL --}}
+                  
                         <textarea name="detail" rows="5" placeholder="Detail" required></textarea>
 
-                        {{-- IMAGES --}}
+                   
                         <label>Product Images (max 3 images)</label>
                         <input type="file"
                                name="images[]"
@@ -95,7 +91,7 @@
                                multiple
                                accept="image/*">
 
-                        {{-- PREVIEW --}}
+                  
                         <div id="image-preview" style="margin-top:10px;"></div>
 
                         <br>
