@@ -102,16 +102,12 @@ class ProductController extends Controller
         $dir = public_path('upload/product');
         $manager = new ImageManager(new Driver());
 
-        // 1. ẢNH CŨ
         $oldImages = json_decode($product->image, true) ?? [];
 
-        // 2. ẢNH USER MUỐN XOÁ (CHƯA XOÁ FILE)
         $deleteImages = $request->delete_images ?? [];
 
-        // 3. ẢNH SAU KHI XOÁ (LOGIC, CHƯA ĐỤNG FILE)
         $remainingImages = array_values(array_diff($oldImages, $deleteImages));
 
-        // 4. UPLOAD ẢNH MỚI
         $newImages = [];
 
         if ($request->hasFile('images')) {
@@ -136,15 +132,12 @@ class ProductController extends Controller
             }
         }
 
-        // 5. ẢNH CUỐI CÙNG
         $finalImages = array_merge($remainingImages, $newImages);
 
-        // ❌ BẮT BUỘC ≥ 1 ẢNH
         if (count($finalImages) < 1) {
-            return back()->withErrors('Sản phẩm phải có ít nhất 1 hình ảnh');
+            return back()->withErrors('Sản phẩm phải có ít nhất 1 ảnh');
         }
 
-        // 6. OK → BÂY GIỜ MỚI XOÁ FILE
         foreach ($deleteImages as $img) {
             if (in_array($img, $oldImages)) {
                 @unlink($dir.'/'.$img);
@@ -153,7 +146,6 @@ class ProductController extends Controller
             }
         }
 
-        // 7. UPDATE DB
         $product->update([
             'name'        => $request->name,
             'price'       => $request->price,
@@ -166,7 +158,30 @@ class ProductController extends Controller
             'image'       => json_encode($finalImages),
         ]);
 
-        return back()->with('success', 'Update product success');
+        return back()->with('success', 'cap nhat thanh cong');
+    }
+    public function destroy($id)
+    {
+        $product = Products::findOrFail($id);
+
+        // chỉ owner mới được xoá
+        if ($product->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        // xoá hình ảnh vật lý
+        $images = json_decode($product->image, true) ?? [];
+
+        foreach ($images as $img) {
+            @unlink(public_path('upload/product/full/'.$img));
+            @unlink(public_path('upload/product/329x380/'.$img));
+            @unlink(public_path('upload/product/85x84/'.$img));
+        }
+
+        // xoá record DB
+        $product->delete();
+
+        return back()->with('success', 'Delete product success');
     }
 
    

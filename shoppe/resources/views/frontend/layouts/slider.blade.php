@@ -19,8 +19,8 @@
 								<button type="button" class="btn btn-default get">Get it now</button>
 							</div>
 							<div class="col-sm-6">
-								<img src="{{ asset('member/images/home/girl1.jpg') }}" class="girl img-responsive" alt="">
-								<img src="{{ asset('member/images/home/pricing.png') }}" class="pricing" alt="">
+								<img src="{{ asset('frontend/images/home/girl1.jpg') }}" class="girl img-responsive" alt="">
+								<img src="{{ asset('frontend/images/home/pricing.png') }}" class="pricing" alt="">
 							</div>
 						</div>
 
@@ -32,8 +32,8 @@
 								<button type="button" class="btn btn-default get">Get it now</button>
 							</div>
 							<div class="col-sm-6">
-								<img src="{{ asset('member/images/home/girl2.jpg') }}" class="girl img-responsive" alt="">
-								<img src="{{ asset('member/images/home/pricing.png') }}" class="pricing" alt="">
+								<img src="{{ asset('frontend/images/home/girl2.jpg') }}" class="girl img-responsive" alt="">
+								<img src="{{ asset('frontend/images/home/pricing.png') }}" class="pricing" alt="">
 							</div>
 						</div>
 
@@ -45,8 +45,8 @@
 								<button type="button" class="btn btn-default get">Get it now</button>
 							</div>
 							<div class="col-sm-6">
-								<img src="{{ asset('member/images/home/girl3.jpg') }}" class="girl img-responsive" alt="">
-								<img src="{{ asset('member/images/home/pricing.png') }}" class="pricing" alt="">
+								<img src="{{ asset('frontend/images/home/girl3.jpg') }}" class="girl img-responsive" alt="">
+								<img src="{{ asset('frontend/images/home/pricing.png') }}" class="pricing" alt="">
 							</div>
 						</div>
 					</div>

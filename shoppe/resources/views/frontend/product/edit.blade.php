@@ -7,7 +7,6 @@
 <div class="container">
 <div class="row">
 
-{{-- LEFT --}}
 <div class="col-sm-3">
     <div class="left-sidebar">
         <h2>Account</h2>
@@ -30,12 +29,13 @@
     </div>
 </div>
 
-{{-- RIGHT --}}
+
+
 <div class="col-sm-9">
 <div class="signup-form">
 <h2>Edit Product</h2>
 
-{{-- ERROR MESSAGE --}}
+
 @if ($errors->any())
     <div class="alert alert-danger">
         <ul style="margin:0">
@@ -46,7 +46,6 @@
     </div>
 @endif
 
-{{-- SUCCESS MESSAGE --}}
 @if (session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
@@ -80,7 +79,7 @@
     @endforeach
 </select>
 
-{{-- SALE --}}
+
 <select name="sale" id="sale-select">
     <option value="0" {{ $product->sale == 0 ? 'selected' : '' }}>New</option>
     <option value="1" {{ $product->sale == 1 ? 'selected' : '' }}>Sale</option>
@@ -136,13 +135,13 @@
 
 @section('scripts')
 <script>
-/* ================= SALE ================= */
+
 document.getElementById('sale-select').addEventListener('change', function () {
     document.getElementById('sale-price').style.display =
         this.value == 1 ? 'block' : 'none';
 });
 
-/* ================= OLD IMAGE DELETE UI ================= */
+// old img
 document.querySelectorAll('.delete-old').forEach(cb => {
     cb.addEventListener('change', function () {
         const img = this.closest('.old-image-box').querySelector('img');
@@ -156,7 +155,7 @@ document.querySelectorAll('.delete-old').forEach(cb => {
     });
 });
 
-/* ================= NEW IMAGE PREVIEW ================= */
+// new img
 const input = document.getElementById('image-input');
 const preview = document.getElementById('image-preview');
 let dataTransfer = new DataTransfer();
@@ -216,7 +215,7 @@ form.addEventListener('submit', function (e) {
 
     if (oldChecked === oldTotal && newFiles === 0) {
         e.preventDefault();
-        alert('Sản phẩm phải có ít nhất 1 hình ảnh');
+        alert('Sản phẩm phải có ít nhất 1 ảnh');
     }
 });
 </script>

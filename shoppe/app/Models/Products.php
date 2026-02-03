@@ -47,4 +47,21 @@ class Products extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // Giá sau khi giảm
+    public function getFinalPriceAttribute()
+    {
+        if ($this->sale_price > 0) {
+            return $this->price - ($this->price * $this->sale_price / 100);
+        }
+
+        return $this->price;
+    }
+
+    // Kiểm tra có sale hay không
+    public function getIsSaleAttribute()
+    {
+        return $this->sale_price > 0;
+    }
+
 }

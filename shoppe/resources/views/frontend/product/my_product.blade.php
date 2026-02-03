@@ -71,10 +71,11 @@
 
                                 <td class="cart_total">
                                     <a href="{{ route('member.product.edit', $product->id) }}">edit</a> |
-                                    <a href="#"
-                                       onclick="return confirm('Delete product?')">
-                                       delete
+                                    <a href="{{ route('member.product.delete', $product->id) }}"
+                                    onclick="return confirm('Delete product?')">
+                                    delete
                                     </a>
+
                                 </td>
                             </tr>
                         @endforeach

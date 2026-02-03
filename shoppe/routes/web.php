@@ -14,11 +14,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 
-Route::prefix('panel')
+Route::prefix('admin')
     ->middleware(['auth'])
     ->group(function () {
 
-        Route::get('/', [DashboardController::class, 'index'])
+        Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('admin.dashboard');
 
         Route::get('/profile', [UserController::class, 'profile'])
@@ -151,7 +151,9 @@ Route::middleware('auth')->prefix('member')->group(function () {
         ->name('member.product.edit');
 
     Route::post('/product/{id}/update', [ProductController::class, 'update'])
-        ->name('member.product.update');        
+        ->name('member.product.update');    
+    Route::get('/product/{id}/delete', [ProductController::class, 'destroy'])
+        ->name('member.product.delete');         
 });
 
 Route::get('/blog', [FrontendBlogController::class, 'index'])
@@ -170,3 +172,7 @@ use App\Http\Controllers\Frontend\CommentController;
 
 Route::post('/blog/comment', [CommentController::class, 'store'])
     ->name('blog.comment');
+use App\Http\Controllers\Frontend\HomeController;
+
+Route::get('/member/home', [HomeController::class, 'index'])
+    ->name('home');
