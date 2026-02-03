@@ -175,4 +175,4 @@ Route::post('/blog/comment', [CommentController::class, 'store'])
 use App\Http\Controllers\Frontend\HomeController;
 
 Route::get('/member/home', [HomeController::class, 'index'])
-    ->name('home');
+    ->name('member.home');

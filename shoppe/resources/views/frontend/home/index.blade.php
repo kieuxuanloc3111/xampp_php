@@ -15,7 +15,7 @@
                 <div class="col-sm-3">
                     @include('frontend.layouts.menuleft')
                 </div>
-                
+
                 <div class="features_items">
                     <h2 class="title text-center">Features Items</h2>
 
@@ -68,7 +68,7 @@
                                     {{-- BADGE --}}
                                     @if($product->is_sale)
                                         <div class="sale-badge">
-                                            -{{ $product->sale }}%
+                                            -{{ $product->sale_price }}%
                                         </div>
                                     @else
                                         <img src="{{ asset('frontend/images/home/new.png') }}"

@@ -173,7 +173,7 @@ class ProductController extends Controller
         $images = json_decode($product->image, true) ?? [];
 
         foreach ($images as $img) {
-            @unlink(public_path('upload/product/full/'.$img));
+            @unlink(public_path('upload/product/'.$img));
             @unlink(public_path('upload/product/329x380/'.$img));
             @unlink(public_path('upload/product/85x84/'.$img));
         }
