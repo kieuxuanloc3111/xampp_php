@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin/profile';
+    // protected $redirectTo = '/admin/profile';
 
     /**
      * Create a new controller instance.
@@ -39,16 +39,21 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
     }
+
     protected function authenticated(Request $request, $user)
     {
+        // Nếu KHÔNG phải admin → đá ra
         if ($user->level != 1) {
             Auth::logout();
 
-            return redirect('/login')
-                ->withErrors([
-                    'email' => 'Bạn không có quyền truy cập trang admin',
-                ]);
+            return redirect()->route('login')->withErrors([
+                'email' => 'Bạn không có quyền truy cập trang admin',
+            ]);
         }
+
+        // Nếu là admin → vào dashboard
+        return redirect()->route('admin.dashboard');
     }
+
 
 }

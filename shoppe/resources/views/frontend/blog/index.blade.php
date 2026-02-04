@@ -48,7 +48,7 @@
                             </p>
 
                             <a class="btn btn-primary"
-                            href="{{ route('member.blog.detail', $blog->id) }}">
+                            href="{{ route('blog.detail', $blog->id) }}">
                                 Read More
                             </a>
 

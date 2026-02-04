@@ -54,17 +54,18 @@ class AuthController extends Controller
         $credentials = [
             'email'    => $request->email,
             'password' => $request->password,
-            'level'    => 0,
+            'level'    => 0, // CHỈ MEMBER
         ];
 
         if (Auth::attempt($credentials, $request->filled('remember_me'))) {
-            return redirect('/member/home');
+            return redirect()->route('member.home');
         }
 
         return back()->withErrors([
             'email' => 'Email hoặc mật khẩu không đúng',
         ]);
     }
+
 
 
     public function logout(Request $request)

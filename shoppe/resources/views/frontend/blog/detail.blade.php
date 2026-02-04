@@ -46,12 +46,12 @@
                             <ul class="pager pull-right">
                                 @if($prevBlog)
                                     <li>
-                                        <a href="{{ route('member.blog.detail', $prevBlog->id) }}">Pre</a>
+                                        <a href="{{ route('blog.detail', $prevBlog->id) }}">Pre</a>
                                     </li>
                                 @endif
                                 @if($nextBlog)
                                     <li>
-                                        <a href="{{ route('member.blog.detail', $nextBlog->id) }}">Next</a>
+                                        <a href="{{ route('blog.detail', $nextBlog->id) }}">Next</a>
                                     </li>
                                 @endif
                             </ul>
