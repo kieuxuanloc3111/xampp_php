@@ -151,6 +151,8 @@ Route::prefix('member')
 
         Route::get('/product/{id}/delete', [ProductController::class, 'destroy'])
             ->name('member.product.delete');
+        Route::get('/product/{id}', [ProductController::class, 'detail'])
+            ->name('member.product.detail');
     });
 
 

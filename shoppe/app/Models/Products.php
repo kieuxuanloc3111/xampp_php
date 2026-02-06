@@ -15,7 +15,7 @@ class Products extends Model
         'sale_price',
         'company',
         'detail',
-        'status',      // 👈 thêm
+        'status',     
         'category_id',
         'brand_id',
         'image',
@@ -24,7 +24,7 @@ class Products extends Model
 
 
     protected $casts = [
-        'image' => 'array', // tự động json_decode
+        'image' => 'array', 
     ];
 
     public $timestamps = true;

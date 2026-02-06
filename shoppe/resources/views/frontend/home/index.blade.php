@@ -4,7 +4,6 @@
 
 @section('content')
 
-{{-- SLIDER --}}
 @include('frontend.layouts.slider')
 
 <section>
@@ -31,10 +30,12 @@
 
                                     <div class="productinfo text-center">
                                         @if($thumb)
-                                            <img src="{{ asset('upload/product/'.$thumb) }}" alt="">
+                                            <a href="{{ route('member.product.detail', $product->id) }}">
+                                                <img src="{{ asset('upload/product/'.$thumb) }}" alt="">
+                                            </a>
                                         @endif
 
-                                        {{-- PRICE --}}
+                                        <!-- price -->
                                         @if($product->is_sale)
                                             <h2>
                                                 <del>${{ number_format($product->price) }}</del>
@@ -52,11 +53,15 @@
                                         </a>
                                     </div>
 
-                                    {{-- OVERLAY --}}
+                                    <!-- overl;ay -->
                                     <div class="product-overlay">
                                         <div class="overlay-content">
                                             <h2>${{ number_format($product->final_price) }}</h2>
-                                            <p>{{ $product->name }}</p>
+                                            <p>
+                                                <a href="{{ route('member.product.detail', $product->id) }}" style="color:#fff">
+                                                    {{ $product->name }}
+                                                </a>
+                                            </p>
 
                                             <a href="#" class="btn btn-default add-to-cart">
                                                 <i class="fa fa-shopping-cart"></i>
@@ -64,8 +69,8 @@
                                             </a>
                                         </div>
                                     </div>
-
-                                    {{-- BADGE --}}
+                                    
+                                    <!-- badge -->
                                     @if($product->is_sale)
                                         <div class="sale-badge">
                                             -{{ $product->sale_price }}%

@@ -164,12 +164,10 @@ class ProductController extends Controller
     {
         $product = Products::findOrFail($id);
 
-        // chỉ owner mới được xoá
         if ($product->user_id !== auth()->id()) {
             abort(403);
         }
 
-        // xoá hình ảnh vật lý
         $images = json_decode($product->image, true) ?? [];
 
         foreach ($images as $img) {
@@ -178,11 +176,22 @@ class ProductController extends Controller
             @unlink(public_path('upload/product/85x84/'.$img));
         }
 
-        // xoá record DB
         $product->delete();
 
         return back()->with('success', 'Delete product success');
     }
+
+    public function detail($id)
+    {
+        $product = Products::findOrFail($id);
+
+        $images = json_decode($product->image, true) ?? [];
+
+        return view('frontend.product.detail', compact(
+            'product',
+            'images'
+        ));
+    }    
 
    
 }
