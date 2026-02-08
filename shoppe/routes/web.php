@@ -109,7 +109,7 @@ Route::prefix('member')->group(function () {
 | MEMBER ROUTES (LEVEL = 0)
 |--------------------------------------------------------------------------
 */
-
+use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\BlogController as FrontendBlogController;
 use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\Frontend\CommentController;
@@ -124,8 +124,6 @@ Route::prefix('member')
         Route::post('/logout', [AuthController::class, 'logout'])
             ->name('member.logout');
 
-        Route::get('/home', [HomeController::class, 'index'])
-            ->name('member.home');
 
         Route::get('/profile', [AuthController::class, 'profileForm'])
             ->name('member.profile');
@@ -151,10 +149,37 @@ Route::prefix('member')
 
         Route::get('/product/{id}/delete', [ProductController::class, 'destroy'])
             ->name('member.product.delete');
-        Route::get('/product/{id}', [ProductController::class, 'detail'])
-            ->name('member.product.detail');
-    });
 
+
+
+        Route::post('/add-to-cart', [CartController::class, 'add'])
+            ->name('member.cart.add');
+    });
+/*
+|--------------------------------------------------------------------------
+| home
+|--------------------------------------------------------------------------
+*/
+Route::get('/home', [HomeController::class, 'index'])
+    ->name('home');
+
+Route::get('product/{id}', [ProductController::class, 'detail'])
+    ->name('product.detail');
+/*
+|--------------------------------------------------------------------------
+| cart
+|--------------------------------------------------------------------------
+*/
+Route::post('/add-to-cart', [CartController::class, 'add'])
+    ->name('cart.add');
+Route::get('/cart', [CartController::class, 'index'])
+    ->name('cart.index');
+
+Route::post('/cart/update', [CartController::class, 'update'])
+    ->name('cart.update');
+
+Route::post('/cart/delete', [CartController::class, 'delete'])
+    ->name('cart.delete');
 
 /*
 |--------------------------------------------------------------------------
@@ -168,3 +193,24 @@ Route::get('/blog', [FrontendBlogController::class, 'index'])
 Route::get('/blog/{id}', [FrontendBlogController::class, 'detail'])
     ->name('blog.detail');
 
+use App\Mail\MailNotify;
+use Illuminate\Support\Facades\Mail;
+
+Route::get('/test-mail', function () {
+    Mail::to('kieuxuanloc3111@gmail.com')->send(new MailNotify());
+    return 'Send mail OK';
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| checkout
+|--------------------------------------------------------------------------
+*/
+use App\Http\Controllers\Frontend\CheckoutController;
+
+Route::get('/checkout', [CheckoutController::class, 'index'])
+    ->name('checkout.index');
+
+Route::post('/checkout', [CheckoutController::class, 'process'])
+    ->name('checkout.process');

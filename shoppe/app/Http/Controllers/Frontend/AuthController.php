@@ -58,7 +58,7 @@ class AuthController extends Controller
         ];
 
         if (Auth::attempt($credentials, $request->filled('remember_me'))) {
-            return redirect()->route('member.home');
+            return redirect()->route('home');
         }
 
         return back()->withErrors([

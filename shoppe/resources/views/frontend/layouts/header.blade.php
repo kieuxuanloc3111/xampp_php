@@ -30,7 +30,7 @@
 			<div class="row">
 				<div class="col-md-4 clearfix">
 					<div class="logo pull-left">
-						<a href="{{ route('member.home') }}">
+						<a href="{{ route('home') }}">
 							<img src="{{ asset('frontend/images/home/logo.png') }}" alt="">
 						</a>
 					</div>
@@ -69,7 +69,18 @@
 
 							<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
 							<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-							<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+							<li>
+								<a href="{{ route('cart.index') }}">
+									<i class="fa fa-shopping-cart"></i>
+									Cart
+									<span id="cart-count">
+										{{ session()->has('cart')
+											? array_sum(array_column(session('cart'), 'qty'))
+											: 0 }}
+									</span>
+								</a>
+							</li>
+
 							@guest
 								<li>
 									<a href="{{ route('member.login') }}">
@@ -117,7 +128,7 @@
 					<div class="mainmenu pull-left">
 						<ul class="nav navbar-nav collapse navbar-collapse">
 							<li>
-								<a href="{{ route('member.home') }}">Home</a>
+								<a href="{{ route('home') }}">Home</a>
 							</li>
 
 							<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>

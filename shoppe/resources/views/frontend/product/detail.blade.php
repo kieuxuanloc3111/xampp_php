@@ -118,7 +118,7 @@
 
                     </div>
                 </div>
-                {{-- DETAIL --}}
+
                 <div class="col-sm-12">
                     <h3>Description</h3>
                     <p>{{ $product->detail }}</p>

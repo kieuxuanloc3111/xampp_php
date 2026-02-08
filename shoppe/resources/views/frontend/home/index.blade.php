@@ -30,7 +30,7 @@
 
                                     <div class="productinfo text-center">
                                         @if($thumb)
-                                            <a href="{{ route('member.product.detail', $product->id) }}">
+                                            <a href="{{ route('product.detail', $product->id) }}">
                                                 <img src="{{ asset('upload/product/'.$thumb) }}" alt="">
                                             </a>
                                         @endif
@@ -47,10 +47,13 @@
 
                                         <p>{{ $product->name }}</p>
 
-                                        <a href="#" class="btn btn-default add-to-cart">
+                                        <a href="javascript:void(0)"
+                                        class="btn btn-default add-to-cart"
+                                        data-id="{{ $product->id }}">
                                             <i class="fa fa-shopping-cart"></i>
                                             Add to cart
                                         </a>
+
                                     </div>
 
                                     <!-- overl;ay -->
@@ -58,15 +61,18 @@
                                         <div class="overlay-content">
                                             <h2>${{ number_format($product->final_price) }}</h2>
                                             <p>
-                                                <a href="{{ route('member.product.detail', $product->id) }}" style="color:#fff">
+                                                <a href="{{ route('product.detail', $product->id) }}" style="color:#fff">
                                                     {{ $product->name }}
                                                 </a>
                                             </p>
 
-                                            <a href="#" class="btn btn-default add-to-cart">
+                                            <a href="javascript:void(0)"
+                                            class="btn btn-default add-to-cart"
+                                            data-id="{{ $product->id }}">
                                                 <i class="fa fa-shopping-cart"></i>
                                                 Add to cart
                                             </a>
+
                                         </div>
                                     </div>
                                     
@@ -94,4 +100,28 @@
         </div>
     </div>
 </section>
+@endsection
+
+@section('scripts')
+<script>
+$(document).ready(function () {
+    $('.add-to-cart').click(function () {
+        let productId = $(this).data('id');
+
+        $.ajax({
+            url: "{{ route('cart.add') }}",
+            type: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                product_id: productId
+            },
+            success: function (res) {
+                if (res.status === 'success') {
+                    $('#cart-count').text(res.total);
+                }
+            }
+        });
+    });
+});
+</script>
 @endsection
