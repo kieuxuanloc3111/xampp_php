@@ -154,11 +154,15 @@
 						</ul>
 					</div>
 				</div>
-				<div class="col-sm-3">
+
+				<form action="{{ route('search') }}" method="GET">
 					<div class="search_box pull-right">
-						<input type="text" placeholder="Search">
+						<input type="text"
+							name="keyword"
+							placeholder="Search"
+							value="{{ request('keyword') }}">
 					</div>
-				</div>
+				</form>
 			</div>
 		</div>
 	</div><!--/header-bottom-->

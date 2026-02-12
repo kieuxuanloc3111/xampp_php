@@ -192,6 +192,69 @@ class ProductController extends Controller
             'images'
         ));
     }    
+    public function search(Request $request)
+    {
+        $keyword = $request->keyword;
 
+        // Nếu không có keyword thì về home
+        if (!$keyword) {
+            return redirect()->route('home');
+        }
+
+        $products = Products::query()
+                    ->where('name', 'LIKE', '%' . $keyword . '%')
+                    ->get();
+
+        return view('frontend.product.search', compact(
+            'products',
+            'keyword'
+        ));
+    }
    
+    public function advancedSearch(Request $request)
+    {
+        $query = Products::orderBy('updated_at', 'desc');
+
+        // NAME
+        if ($request->filled('name')) {
+            $query->where('name', 'LIKE', '%' . $request->name . '%');
+        }
+
+        // PRICE RANGE
+        if ($request->filled('price_range')) {
+            [$min, $max] = explode('-', $request->price_range);
+            $query->whereBetween('price', [$min, $max]);
+        }
+
+        // CATEGORY
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        // BRAND
+        if ($request->filled('brand_id')) {
+            $query->where('brand_id', $request->brand_id);
+        }
+
+        // STATUS
+        if ($request->filled('status')) {
+            if ($request->status == 'sale') {
+                $query->where('sale', 1);
+            } elseif ($request->status == 'new') {
+                $query->where('sale', 0);
+            }
+        }
+
+        $products = $query->paginate(6)->withQueryString();
+
+        $categories = Category::all();
+        $brands     = Brand::all();
+
+        // dùng lại view home luôn
+        return view('frontend.home.index', compact(
+            'products',
+            'categories',
+            'brands'
+        ));
+    }
 }

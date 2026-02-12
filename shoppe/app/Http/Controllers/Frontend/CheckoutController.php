@@ -32,9 +32,7 @@ class CheckoutController extends Controller
             return redirect()->route('home');
         }
 
-        // ======================
-        // LOGIN / REGISTER NHANH
-        // ======================
+        // not logined
         if (!Auth::check()) {
 
             $request->validate([
@@ -55,17 +53,13 @@ class CheckoutController extends Controller
             $user = Auth::user();
         }
 
-        // ======================
-        // TÍNH TỔNG TIỀN
-        // ======================
+        // total
         $total = 0;
         foreach ($cart as $item) {
             $total += $item['price'] * $item['qty'];
         }
 
-        // ======================
-        // LƯU HISTORY
-        // ======================
+
         History::create([
             'id_user' => $user->id,
             'name'    => $request->name ?? $user->name,
@@ -74,16 +68,12 @@ class CheckoutController extends Controller
             'price'   => $total
         ]);
 
-        // ======================
-        // SEND MAIL
-        // ======================
+        // mail
         Mail::to($user->email)->send(
             new MailNotify($cart, $total, $user)
         );
 
-        // ======================
-        // CLEAR CART
-        // ======================
+
         session()->forget('cart');
 
         return redirect()->route('home')

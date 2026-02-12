@@ -1,10 +1,8 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'Home')
+@section('title', 'Search')
 
 @section('content')
-
-@include('frontend.layouts.slider')
 
 <section>
     <div class="container">
@@ -16,67 +14,9 @@
                 </div>
 
                 <div class="features_items">
-                    <h2 class="title text-center">Features Items</h2>
-                    <form method="GET" action="{{ route('search') }}">
-
-                    <div class="row" style="margin-bottom:20px;">
-
-                        <div class="col-sm-2">
-                            <input type="text"
-                                name="name"
-                                placeholder="Name"
-                                value="{{ request('name') }}"
-                                class="form-control">
-                        </div>
-
-                        <div class="col-sm-2">
-                            <select name="price_range" class="form-control">
-                                <option value="">Price</option>
-                                <option value="10-100">10 - 100</option>
-                                <option value="100-500">100 - 500</option>
-                                <option value="500-1000">500 - 1000</option>
-                            </select>
-                        </div>
-
-                        <div class="col-sm-2">
-                            <select name="category_id" class="form-control">
-                                <option value="">Category</option>
-                                @foreach($categories as $cat)
-                                    <option value="{{ $cat->id }}">
-                                        {{ $cat->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="col-sm-2">
-                            <select name="brand_id" class="form-control">
-                                <option value="">Brand</option>
-                                @foreach($brands as $brand)
-                                    <option value="{{ $brand->id }}">
-                                        {{ $brand->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="col-sm-2">
-                            <select name="status" class="form-control">
-                                <option value="">Status</option>
-                                <option value="sale">Sale</option>
-                                <option value="new">New</option>
-                            </select>
-                        </div>
-
-                        <div class="col-sm-2">
-                            <button type="submit" class="btn btn-primary">
-                                Search
-                            </button>
-                        </div>
-
-                    </div>
-
-                    </form>
+                    <h2 class="title text-center">
+                        Search results for "{{ $keyword }}"
+                    </h2>
 
                     @forelse($products as $product)
                         @php
@@ -95,7 +35,7 @@
                                             </a>
                                         @endif
 
-                                        <!-- price -->
+                                        {{-- PRICE --}}
                                         @if($product->is_sale)
                                             <h2>
                                                 <del>${{ number_format($product->price) }}</del>
@@ -108,15 +48,14 @@
                                         <p>{{ $product->name }}</p>
 
                                         <a href="javascript:void(0)"
-                                        class="btn btn-default add-to-cart"
-                                        data-id="{{ $product->id }}">
+                                           class="btn btn-default add-to-cart"
+                                           data-id="{{ $product->id }}">
                                             <i class="fa fa-shopping-cart"></i>
                                             Add to cart
                                         </a>
-
                                     </div>
 
-                                    <!-- overl;ay -->
+                                    {{-- OVERLAY --}}
                                     <div class="product-overlay">
                                         <div class="overlay-content">
                                             <h2>${{ number_format($product->final_price) }}</h2>
@@ -127,16 +66,15 @@
                                             </p>
 
                                             <a href="javascript:void(0)"
-                                            class="btn btn-default add-to-cart"
-                                            data-id="{{ $product->id }}">
+                                               class="btn btn-default add-to-cart"
+                                               data-id="{{ $product->id }}">
                                                 <i class="fa fa-shopping-cart"></i>
                                                 Add to cart
                                             </a>
-
                                         </div>
                                     </div>
-                                    
-                                    <!-- badge -->
+
+                                    {{-- BADGE --}}
                                     @if($product->is_sale)
                                         <div class="sale-badge">
                                             -{{ $product->sale_price }}%
@@ -150,27 +88,25 @@
                                 </div>
                             </div>
                         </div>
+
                     @empty
-                        <p class="text-center">No product</p>
+                        <p class="text-center">No product found</p>
                     @endforelse
 
                 </div>
-                @if(method_exists($products, 'links'))
-                    <div class="text-center">
-                        {{ $products->links() }}
-                    </div>
-                @endif
 
             </div>
         </div>
     </div>
 </section>
+
 @endsection
 
 @section('scripts')
 <script>
 $(document).ready(function () {
     $('.add-to-cart').click(function () {
+
         let productId = $(this).data('id');
 
         $.ajax({

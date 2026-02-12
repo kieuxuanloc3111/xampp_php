@@ -7,7 +7,6 @@
 <section id="cart_items">
     <div class="container">
 
-        {{-- BREADCRUMB --}}
         <div class="breadcrumbs">
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}">Home</a></li>
@@ -15,11 +14,11 @@
             </ol>
         </div>
 
-        {{-- THÔNG TIN NGƯỜI MUA --}}
+
         <div class="shopper-informations">
             <div class="row">
 
-                {{-- CỘT TRÁI: ĐĂNG KÝ NHANH (CHỈ HIỆN KHI CHƯA LOGIN) --}}
+                <!-- not login -->
                 @guest
                 <div class="col-sm-4">
                     <div class="shopper-info">
@@ -55,7 +54,7 @@
                 </div>
                 @endguest
 
-                {{-- CỘT PHẢI: ĐÃ LOGIN --}}
+                <!-- logined -->
                 @auth
                 <div class="col-sm-4">
                     <div class="shopper-info">
@@ -84,43 +83,75 @@
                 </div>
                 @endauth
 
-                {{-- TÓM TẮT ĐƠN HÀNG --}}
+                <!-- don hang -->
                 <div class="col-sm-8">
                     <div class="table-responsive cart_info">
                         <table class="table table-condensed">
                             <thead>
                                 <tr class="cart_menu">
-                                    <td>Item</td>
-                                    <td>Price</td>
-                                    <td>Qty</td>
-                                    <td>Total</td>
+                                    <td class="image">Item</td>
+                                    <td class="description"></td>
+                                    <td class="price">Price</td>
+                                    <td class="quantity">Quantity</td>
+                                    <td class="total">Total</td>
+                                    <td></td>
                                 </tr>
                             </thead>
                             <tbody>
 
-                            @php $total = 0; @endphp
+                            @php $subTotal = 0; @endphp
 
                             @foreach($cart as $item)
                                 @php
                                     $rowTotal = $item['price'] * $item['qty'];
-                                    $total += $rowTotal;
+                                    $subTotal += $rowTotal;
                                 @endphp
                                 <tr>
-                                    <td>{{ $item['name'] }}</td>
-                                    <td>${{ $item['price'] }}</td>
-                                    <td>{{ $item['qty'] }}</td>
-                                    <td>${{ $rowTotal }}</td>
+                                    <td class="cart_product">
+                                        <img src="{{ asset('upload/product/85x84_'.$item['image']) }}" alt="">
+                                    </td>
+
+                                    <td class="cart_description">
+                                        <h4>{{ $item['name'] }}</h4>
+                                    </td>
+
+                                    <td class="cart_price">
+                                        <p>${{ $item['price'] }}</p>
+                                    </td>
+
+                                    <td class="cart_quantity">
+                                        <p>{{ $item['qty'] }}</p>
+                                    </td>
+
+                                    <td class="cart_total">
+                                        <p class="cart_total_price">${{ $rowTotal }}</p>
+                                    </td>
+
+                                    <td></td>
                                 </tr>
                             @endforeach
 
+
                             <tr>
-                                <td colspan="3"><b>Total</b></td>
-                                <td><b>${{ $total }}</b></td>
+                                <td colspan="4">&nbsp;</td>
+                                <td colspan="2">
+                                    <table class="table table-condensed total-result">
+                                        <tr>
+                                            <td>Cart Sub Total</td>
+                                            <td>${{ $subTotal }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total</td>
+                                            <td><span>${{ $subTotal }}</span></td>
+                                        </tr>
+                                    </table>
+                                </td>
                             </tr>
 
                             </tbody>
                         </table>
                     </div>
+
                 </div>
 
             </div>

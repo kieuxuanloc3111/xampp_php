@@ -214,3 +214,11 @@ Route::get('/checkout', [CheckoutController::class, 'index'])
 
 Route::post('/checkout', [CheckoutController::class, 'process'])
     ->name('checkout.process');
+
+    // search
+
+Route::get('/search', [ProductController::class, 'search'])
+    ->name('search');
+
+Route::get('/search', [ProductController::class, 'advancedSearch'])
+    ->name('search');
