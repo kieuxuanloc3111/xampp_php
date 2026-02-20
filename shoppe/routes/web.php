@@ -220,5 +220,5 @@ Route::post('/checkout', [CheckoutController::class, 'process'])
 Route::get('/search', [ProductController::class, 'search'])
     ->name('search');
 
-Route::get('/search', [ProductController::class, 'advancedSearch'])
-    ->name('search');
+Route::get('/advancedsearch', [ProductController::class, 'advancedSearch'])
+    ->name('advancedsearch');

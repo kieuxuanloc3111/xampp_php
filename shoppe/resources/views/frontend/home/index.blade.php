@@ -17,7 +17,7 @@
 
                 <div class="features_items">
                     <h2 class="title text-center">Features Items</h2>
-                    <form method="GET" action="{{ route('search') }}">
+                    <form method="GET" action="{{ route('advancedsearch') }}">
 
                     <div class="row" style="margin-bottom:20px;">
 
@@ -30,7 +30,7 @@
                         </div>
 
                         <div class="col-sm-2">
-                            <select name="price_range" class="form-control">
+                            <select name="price_range" class="search_box pull-right">
                                 <option value="">Price</option>
                                 <option value="10-100">10 - 100</option>
                                 <option value="100-500">100 - 500</option>
@@ -39,7 +39,7 @@
                         </div>
 
                         <div class="col-sm-2">
-                            <select name="category_id" class="form-control">
+                            <select name="category_id" class="search_box pull-right">
                                 <option value="">Category</option>
                                 @foreach($categories as $cat)
                                     <option value="{{ $cat->id }}">
@@ -50,7 +50,7 @@
                         </div>
 
                         <div class="col-sm-2">
-                            <select name="brand_id" class="form-control">
+                            <select name="brand_id" class="search_box pull-right">
                                 <option value="">Brand</option>
                                 @foreach($brands as $brand)
                                     <option value="{{ $brand->id }}">
@@ -61,7 +61,7 @@
                         </div>
 
                         <div class="col-sm-2">
-                            <select name="status" class="form-control">
+                            <select name="status" class="search_box pull-rightl">
                                 <option value="">Status</option>
                                 <option value="sale">Sale</option>
                                 <option value="new">New</option>

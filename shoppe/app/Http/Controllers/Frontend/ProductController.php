@@ -196,7 +196,6 @@ class ProductController extends Controller
     {
         $keyword = $request->keyword;
 
-        // Nếu không có keyword thì về home
         if (!$keyword) {
             return redirect()->route('home');
         }
@@ -215,28 +214,25 @@ class ProductController extends Controller
     {
         $query = Products::orderBy('updated_at', 'desc');
 
-        // NAME
+
         if ($request->filled('name')) {
             $query->where('name', 'LIKE', '%' . $request->name . '%');
         }
 
-        // PRICE RANGE
+
         if ($request->filled('price_range')) {
             [$min, $max] = explode('-', $request->price_range);
             $query->whereBetween('price', [$min, $max]);
         }
 
-        // CATEGORY
         if ($request->filled('category_id')) {
             $query->where('category_id', $request->category_id);
         }
 
-        // BRAND
         if ($request->filled('brand_id')) {
             $query->where('brand_id', $request->brand_id);
         }
 
-        // STATUS
         if ($request->filled('status')) {
             if ($request->status == 'sale') {
                 $query->where('sale', 1);
@@ -250,7 +246,6 @@ class ProductController extends Controller
         $categories = Category::all();
         $brands     = Brand::all();
 
-        // dùng lại view home luôn
         return view('frontend.home.index', compact(
             'products',
             'categories',
