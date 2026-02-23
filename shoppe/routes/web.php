@@ -222,3 +222,5 @@ Route::get('/search', [ProductController::class, 'search'])
 
 Route::get('/advancedsearch', [ProductController::class, 'advancedSearch'])
     ->name('advancedsearch');
+Route::get('/filter-price', [ProductController::class, 'filterPrice'])
+    ->name('filter.price');

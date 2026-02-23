@@ -252,4 +252,25 @@ class ProductController extends Controller
             'brands'
         ));
     }
+
+    public function filterPrice(Request $request)
+    {
+        $min = $request->min;
+        $max = $request->max;
+
+        $products = Products::whereRaw(
+            "(CASE 
+                WHEN sale_price > 0 
+                THEN price - (price * sale_price / 100)
+                ELSE price 
+            END) BETWEEN ? AND ?",
+            [$min, $max]
+        )
+        ->orderBy('updated_at', 'desc')
+        ->get();
+
+        return view('frontend.product.product_list',
+            compact('products')
+        )->render();
+    }
 }

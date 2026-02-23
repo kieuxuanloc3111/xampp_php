@@ -33,6 +33,7 @@
 <script src="{{ asset('frontend/js/price-range.js') }}"></script>
 <script src="{{ asset('frontend/js/jquery.prettyPhoto.js') }}"></script>
 <script src="{{ asset('frontend/js/main.js') }}"></script>
+<!-- <script src="{{ asset('frontend/js/bootstrap-slider.js') }}"></script> -->
 @yield('scripts')
 </body>
 </html>
