@@ -42,7 +42,6 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        // Nếu KHÔNG phải admin → đá ra
         if ($user->level != 1) {
             Auth::logout();
 
@@ -51,7 +50,7 @@ class LoginController extends Controller
             ]);
         }
 
-        // Nếu là admin → vào dashboard
+
         return redirect()->route('admin.dashboard');
     }
 

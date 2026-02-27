@@ -18,7 +18,7 @@ Route::get('/', [HomeController::class, 'index'])
 | AUTH DEFAULT (Laravel)
 |--------------------------------------------------------------------------
 */
-Auth::routes();
+// Auth::routes();
 
 
 /*
@@ -208,6 +208,7 @@ Route::get('/test-mail', function () {
 |--------------------------------------------------------------------------
 */
 use App\Http\Controllers\Frontend\CheckoutController;
+use App\Http\Controllers\Frontend\ForgotPasswordController;
 
 Route::get('/checkout', [CheckoutController::class, 'index'])
     ->name('checkout.index');
@@ -224,3 +225,16 @@ Route::get('/advancedsearch', [ProductController::class, 'advancedSearch'])
     ->name('advancedsearch');
 Route::get('/filter-price', [ProductController::class, 'filterPrice'])
     ->name('filter.price');
+
+// forget pas
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForm'])
+    ->name('password.request');
+
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendLink'])
+    ->name('password.email');
+
+Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'resetForm'])
+    ->name('password.reset');
+
+Route::post('/reset-password', [ForgotPasswordController::class, 'updatePassword'])
+    ->name('password.update');

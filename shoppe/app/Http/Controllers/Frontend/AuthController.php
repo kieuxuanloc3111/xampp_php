@@ -54,7 +54,7 @@ class AuthController extends Controller
         $credentials = [
             'email'    => $request->email,
             'password' => $request->password,
-            'level'    => 0, // CHỈ MEMBER
+            'level'    => 0, 
         ];
 
         if (Auth::attempt($credentials, $request->filled('remember_me'))) {
