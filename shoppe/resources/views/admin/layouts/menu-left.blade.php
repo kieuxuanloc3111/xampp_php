@@ -45,7 +45,20 @@
                         <span class="hide-menu">Blog</span>
                     </a>
                 </li>
-
+                <li class="sidebar-item">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                    href="{{ route('admin.user.index') }}">
+                        <i class="mdi mdi-account-multiple"></i>
+                        <span class="hide-menu">User List</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                    href="{{ route('admin.product.index') }}">
+                        <i class="mdi mdi-cart"></i>
+                        <span class="hide-menu">Product List</span>
+                    </a>
+                </li>
 
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#">

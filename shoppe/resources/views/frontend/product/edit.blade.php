@@ -1,41 +1,25 @@
-@extends('frontend.layouts.app')
+@extends('admin.layouts.app')
 
 @section('title', 'Edit Product')
 
 @section('content')
-<section>
-<div class="container">
-<div class="row">
 
-<div class="col-sm-3">
-    <div class="left-sidebar">
-        <h2>Account</h2>
-        <div class="panel-group category-products">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a href="{{ route('member.profile') }}">Account</a>
-                    </h4>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a href="{{ route('member.product.my') }}">My product</a>
-                    </h4>
-                </div>
-            </div>
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-5 align-self-center">
+            <h4 class="page-title">Edit Product</h4>
         </div>
     </div>
 </div>
 
+<div class="container-fluid">
+<div class="row">
+<div class="col-lg-8">
 
+<div class="card">
+<div class="card-body">
 
-<div class="col-sm-9">
-<div class="signup-form">
-<h2>Edit Product</h2>
-
-
+{{-- ERROR --}}
 @if ($errors->any())
     <div class="alert alert-danger">
         <ul style="margin:0">
@@ -52,51 +36,106 @@
     </div>
 @endif
 
-
 <form method="POST"
-      action="{{ route('member.product.update', $product->id) }}"
+      action="{{ route('admin.product.update', $product->id) }}"
       enctype="multipart/form-data">
 @csrf
+@method('PUT')
 
-<input type="text" name="name" value="{{ $product->name }}" required>
-<input type="number" name="price" value="{{ $product->price }}" required>
+{{-- NAME --}}
+<div class="form-group mb-3">
+    <label>Name</label>
+    <input type="text"
+           name="name"
+           value="{{ $product->name }}"
+           class="form-control form-control-line"
+           required>
+</div>
 
-<select name="category_id" required>
-    @foreach($categories as $cat)
-        <option value="{{ $cat->id }}"
-            {{ $product->category_id == $cat->id ? 'selected' : '' }}>
-            {{ $cat->name }}
-        </option>
-    @endforeach
-</select>
+{{-- PRICE --}}
+<div class="form-group mb-3">
+    <label>Price</label>
+    <input type="number"
+           name="price"
+           value="{{ $product->price }}"
+           class="form-control form-control-line"
+           required>
+</div>
 
-<select name="brand_id" required>
-    @foreach($brands as $brand)
-        <option value="{{ $brand->id }}"
-            {{ $product->brand_id == $brand->id ? 'selected' : '' }}>
-            {{ $brand->name }}
-        </option>
-    @endforeach
-</select>
+{{-- CATEGORY --}}
+<div class="form-group mb-3">
+    <label>Category</label>
+    <select name="category_id" class="form-control">
+        @foreach($categories as $cat)
+            <option value="{{ $cat->id }}"
+                {{ $product->category_id == $cat->id ? 'selected' : '' }}>
+                {{ $cat->name }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
+{{-- BRAND --}}
+<div class="form-group mb-3">
+    <label>Brand</label>
+    <select name="brand_id" class="form-control">
+        @foreach($brands as $brand)
+            <option value="{{ $brand->id }}"
+                {{ $product->brand_id == $brand->id ? 'selected' : '' }}>
+                {{ $brand->name }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
-<select name="sale" id="sale-select">
-    <option value="0" {{ $product->sale == 0 ? 'selected' : '' }}>New</option>
-    <option value="1" {{ $product->sale == 1 ? 'selected' : '' }}>Sale</option>
-</select>
+{{-- SALE --}}
+<div class="form-group mb-3">
+    <label>Sale</label>
+    <select name="sale" id="sale-select" class="form-control">
+        <option value="0" {{ $product->sale == 0 ? 'selected' : '' }}>New</option>
+        <option value="1" {{ $product->sale == 1 ? 'selected' : '' }}>Sale</option>
+    </select>
+</div>
 
-<input type="number"
-       name="sale_price"
-       id="sale-price"
-       value="{{ $product->sale_price }}"
-       style="{{ $product->sale ? '' : 'display:none' }}">
+<div class="form-group mb-3">
+    <input type="number"
+           name="sale_price"
+           id="sale-price"
+           value="{{ $product->sale_price }}"
+           class="form-control"
+           placeholder="Sale price"
+           style="{{ $product->sale ? '' : 'display:none' }}">
+</div>
 
-<input type="text" name="company" value="{{ $product->company }}" required>
+{{-- COMPANY --}}
+<div class="form-group mb-3">
+    <label>Company</label>
+    <input type="text"
+           name="company"
+           value="{{ $product->company }}"
+           class="form-control">
+</div>
 
-<textarea name="detail" rows="5">{{ $product->detail }}</textarea>
+{{-- DETAIL --}}
+<div class="form-group mb-3">
+    <label>Detail</label>
+    <textarea name="detail"
+              rows="5"
+              class="form-control">{{ $product->detail }}</textarea>
+</div>
+
+{{-- STATUS (ADMIN ONLY) --}}
+<div class="form-group mb-3">
+    <label>Status</label>
+    <select name="status" class="form-control">
+        <option value="0" {{ $product->status == 0 ? 'selected' : '' }}>Pending</option>
+        <option value="1" {{ $product->status == 1 ? 'selected' : '' }}>Approved</option>
+    </select>
+</div>
 
 <hr>
-<h4>Old Images (tick to delete)</h4>
+
+<h5>Old Images (tick to delete)</h5>
 
 <div style="display:flex;flex-wrap:wrap">
 @foreach($oldImages as $img)
@@ -117,31 +156,44 @@
 <hr>
 
 <label>Upload new images (max 3)</label>
-<input type="file" name="images[]" id="image-input" multiple accept="image/*">
+<input type="file"
+       name="images[]"
+       id="image-input"
+       multiple
+       accept="image/*"
+       class="form-control">
 
-<div id="image-preview" style="margin-top:10px;display:flex"></div>
+<div id="image-preview"
+     style="margin-top:10px;display:flex"></div>
 
 <br>
-<button class="btn btn-default">Update product</button>
+
+<button class="btn btn-success text-white">Update</button>
+<a href="{{ route('admin.product.index') }}"
+   class="btn btn-secondary">Back</a>
 
 </form>
+
 </div>
 </div>
 
 </div>
 </div>
-</section>
+</div>
+
 @endsection
+
 
 @section('scripts')
 <script>
 
+// SALE toggle
 document.getElementById('sale-select').addEventListener('change', function () {
     document.getElementById('sale-price').style.display =
         this.value == 1 ? 'block' : 'none';
 });
 
-// old img
+// highlight old image when delete checked
 document.querySelectorAll('.delete-old').forEach(cb => {
     cb.addEventListener('change', function () {
         const img = this.closest('.old-image-box').querySelector('img');
@@ -155,7 +207,7 @@ document.querySelectorAll('.delete-old').forEach(cb => {
     });
 });
 
-// new img
+// preview new images
 const input = document.getElementById('image-input');
 const preview = document.getElementById('image-preview');
 let dataTransfer = new DataTransfer();
@@ -207,6 +259,7 @@ input.addEventListener('change', function (e) {
     input.files = dataTransfer.files;
 });
 
+// prevent no image
 const form = document.querySelector('form');
 form.addEventListener('submit', function (e) {
     const oldChecked = document.querySelectorAll('.delete-old:checked').length;
@@ -218,5 +271,6 @@ form.addEventListener('submit', function (e) {
         alert('Sản phẩm phải có ít nhất 1 ảnh');
     }
 });
+
 </script>
 @endsection

@@ -44,7 +44,11 @@
                             <input type="checkbox" name="remember_me" class="checkbox">
                             Keep me signed in
                         </span>
-
+                        <div style="margin-top:10px; text-align:right;">
+                            <a href="{{ route('password.request') }}">
+                                Forgot your password?
+                            </a>
+                        </div>
                     </form>
 
                 </div>

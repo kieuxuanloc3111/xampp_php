@@ -18,7 +18,7 @@ Route::get('/', [HomeController::class, 'index'])
 | AUTH DEFAULT (Laravel)
 |--------------------------------------------------------------------------
 */
-// Auth::routes();
+Auth::routes();
 
 
 /*
@@ -32,7 +32,7 @@ use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\BrandController;
-
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 Route::prefix('admin')
     ->middleware(['auth', 'admin'])
     ->name('admin.')
@@ -47,6 +47,30 @@ Route::prefix('admin')
         Route::post('/profile', [UserController::class, 'update'])
             ->name('profile.update');
 
+        // USER LIST
+        Route::get('/user', [UserController::class, 'index'])
+            ->name('user.index');
+
+        Route::get('/user/{id}/edit', [UserController::class, 'edit'])
+            ->name('user.edit');
+
+        Route::put('/user/{id}', [UserController::class, 'update_member'])
+            ->name('user.update');
+
+        Route::get('/user/{id}/delete', [UserController::class, 'destroy'])
+            ->name('user.delete');
+        // PRODUCT ADMIN
+        Route::get('/product', [AdminProductController::class, 'index'])
+            ->name('product.index');
+
+        Route::get('/product/{id}/edit', [AdminProductController::class, 'edit'])
+            ->name('product.edit');
+
+        Route::put('/product/{id}', [AdminProductController::class, 'update'])
+            ->name('product.update');
+
+        Route::get('/product/{id}/delete', [AdminProductController::class, 'destroy'])
+            ->name('product.delete');
         // COUNTRY
         Route::get('/country', [CountryController::class, 'index'])->name('country.index');
         Route::get('/country/create', [CountryController::class, 'create'])->name('country.create');
