@@ -56,14 +56,18 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        // Không cho admin tự xoá chính mình
         if ($user->id == auth()->id()) {
-            return redirect()->back()->with('error', 'Cannot delete yourself');
+            return back()->with('error', 'Cannot delete yourself');
+        }
+
+        if ($user->level == 1) {
+            return back()->with('error', 'Cannot delete another admin');
         }
 
         $user->delete();
 
-        return redirect()->route('admin.user.index');
+        return redirect()->route('admin.user.index')
+            ->with('success', 'User deleted');
     }
     
     public function profile()
