@@ -32,6 +32,7 @@ use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\HistoryController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 Route::prefix('admin')
     ->middleware(['auth', 'admin'])
@@ -71,6 +72,11 @@ Route::prefix('admin')
 
         Route::get('/product/{id}/delete', [AdminProductController::class, 'destroy'])
             ->name('product.delete');
+
+        
+        Route::get('/history', [HistoryController::class, 'index'])
+            ->name('history.index');
+
         // COUNTRY
         Route::get('/country', [CountryController::class, 'index'])->name('country.index');
         Route::get('/country/create', [CountryController::class, 'create'])->name('country.create');

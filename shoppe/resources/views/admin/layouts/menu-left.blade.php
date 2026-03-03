@@ -59,7 +59,13 @@
                         <span class="hide-menu">Product List</span>
                     </a>
                 </li>
-
+                <li class="sidebar-item">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                    href="{{ route('admin.history.index') }}">
+                        <i class="mdi mdi-archive"></i>
+                        <span class="hide-menu">Purchase History</span>
+                    </a>
+                </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
                         <i class="mdi mdi-arrange-bring-forward"></i>
