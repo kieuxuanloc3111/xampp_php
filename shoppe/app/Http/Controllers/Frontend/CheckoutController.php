@@ -73,6 +73,7 @@ class CheckoutController extends Controller
             new MailNotify($cart, $total, $user)
         );
 
+        dd('mail sent');
 
         session()->forget('cart');
 
