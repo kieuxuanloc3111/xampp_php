@@ -69,11 +69,20 @@ class CheckoutController extends Controller
         ]);
 
         // mail
-        Mail::to($user->email)->send(
-            new MailNotify($cart, $total, $user)
-        );
+        try {
 
-        dd('mail sent');
+            Mail::to($user->email)->send(
+                new MailNotify($cart, $total, $user)
+            );
+
+            dd("Mail success");
+
+        } catch (\Exception $e) {
+
+            dd($e->getMessage());
+
+        }
+
 
         session()->forget('cart');
 
