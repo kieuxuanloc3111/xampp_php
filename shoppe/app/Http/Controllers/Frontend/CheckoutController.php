@@ -75,7 +75,7 @@ class CheckoutController extends Controller
                 new MailNotify($cart, $total, $user)
             );
 
-            dd("Mail success");
+            // dd("Mail success");
 
         } catch (\Exception $e) {
 
